@@ -115,7 +115,7 @@ CREATE TABLE fields (
 
 DROP TABLE  IF EXISTS fields ; 
 
-
+-- insertando datos en la tabla fields
 INSERT INTO fields (name, rental_price, branch_id, type_id, image, opening_hours, closing_time)
 VALUES('signal iduna park', 260, 1, 1, 'image.webp', '07:00', '23:00'),
 ('santiago bernabeun', 260, 2, 1, 'image.webp', '07:00', '23:00'),
@@ -124,7 +124,20 @@ VALUES('signal iduna park', 260, 1, 1, 'image.webp', '07:00', '23:00'),
 ('old traford', 260, 2, 1, 'image.webp', '07:00', '23:00');
 
 
+-- consultando datos en la tabla fields con joins
+SELECT fields.*, branches.name AS nombre_sucursal, branches.address,
+branches.image, districts.name AS distrito, types.name AS tipo_cancha
+FROM fields 
+INNER JOIN branches 
+ON fields.branch_id = branches.id
+INNER JOIN districts
+ON branches.district_id = districts.id
+INNER JOIN types
+ON fields.type_id = types.id ;
 
+
+-- consultando todos los registros
+SELECT * FROM fields;
 
 
 CREATE TABLE reservations (

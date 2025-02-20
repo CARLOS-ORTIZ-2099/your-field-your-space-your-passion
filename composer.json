@@ -1,0 +1,17 @@
+{
+  "name": "user/your-field-your-space-your-passion",
+  "authors": [
+    {
+      "name": "Carlos Eduardo Ortiz",
+      "email": "carlosklinton.2016@gmail.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Controllers\\": "./controllers",
+      "Models\\": "./models",
+      "AppRouter\\": "./"
+    }
+  }
+}
