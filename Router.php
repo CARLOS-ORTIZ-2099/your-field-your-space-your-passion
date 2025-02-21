@@ -55,6 +55,14 @@ class Router
 
   public  function render($view, $data = [])
   {
+    //debuguear($data);
+    // creando variabkes variables
+    // esto de aqui se hace para que la vista que se renderiza lea las variables con el mismo nombre con el 
+    // cual se le pasa
+    foreach ($data as $key => $value) {
+      // debuguear($key);
+      $$key = $value;
+    }
 
     // tenemos que tener en cuenta que siempre vamos a utilizar el layout principal, asi como el header y el footer
 

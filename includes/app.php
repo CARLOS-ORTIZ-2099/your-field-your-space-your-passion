@@ -1,6 +1,7 @@
 <?php
 
 use Models\Field;
+use Models\User;
 
 require 'functions.php';
 require 'database.php';
@@ -12,3 +13,4 @@ require __DIR__ . '/../vendor/autoload.php';
 /* ActiveRecord::setDB($db); */
 
 Field::setDb($db);
+User::setDb($db);

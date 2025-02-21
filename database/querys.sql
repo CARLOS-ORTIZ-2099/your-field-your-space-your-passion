@@ -27,6 +27,15 @@ VALUES
 ('pepe', 'torres', 'pepe@gmail.com', '123456', 0,'123', 1),
 
 
+-- buscando un user en especifico
+SELECT * FROM users WHERE email = '';
+-- insertando usuarios
+INSERT INTO users (name, last_name, email, password)
+VALUES
+('fiorela', 'torres', 'fiorela@gmail.com', '123456');
+
+
+
 
 
 CREATE TABLE districts (

@@ -19,7 +19,7 @@
       <a href="/about">nosotros</a>
       <a href="/fields">alquileres</a>
       <a href="/blog">blog</a>
-      <a href="/inicia_session">inicia session</a>
+      <a href="/login">inicia session</a>
     </nav>
   </header>
 

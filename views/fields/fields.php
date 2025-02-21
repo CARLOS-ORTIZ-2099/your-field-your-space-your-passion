@@ -29,19 +29,16 @@
 
   <article>
     <h2>Alquileres</h2>
-
-
-    <?php while ($row = $data->fetch_assoc()) : ?>
-      <!--  <?php debuguear($row); ?> -->
-      <h3><?= $row['name'] ?></h3>
+    <?php foreach ($fields as $field) : ?>
+      <h3><?= $field['name'] ?></h3>
       <img src="<?= '/images/estadio.webp' ?>" alt="image-estadio">
       <div>
-        <span> apertura: <strong><?= $row['opening_hours'] ?></strong></span>
-        <span> cierre: <strong><?= $row['closing_time'] ?></strong></span>
+        <span> apertura: <strong><?= $field['opening_hours'] ?></strong></span>
+        <span> cierre: <strong><?= $field['closing_time'] ?></strong></span>
       </div>
-      <a href="/field?id=<?= $row['id'] ?>">ver sucursal</a>
-    <?php endwhile; ?>
-  </article>
+      <a href="/field?id=<?= $field['id'] ?>">ver sucursal</a>
+    <?php endforeach; ?>
+
 
 
 </section>

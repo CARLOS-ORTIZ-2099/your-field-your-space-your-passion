@@ -1,19 +1,18 @@
-<?php $row = $data->fetch_assoc(); ?>
-<?= debuguear($row); ?>
+<!-- <?= debuguear($field); ?> -->
 
 <section>
-  <h1><?= $row['name'] ?></h1>
+  <h1><?= $field['name'] ?></h1>
   <div>
     <img src="<?= '/images/estadio.webp' ?>" alt="">
   </div>
 
   <div>
-    <h2>informacion del la loza <?= $row['name'] ?></h2>
-    <p>- precio X hora :<strong><?= $row['rental_price'] ?>$</strong></p>
-    <p>- sucursal : <strong><?= $row['nombre_sucursal'] ?></strong></p>
-    <p>- direccion : <strong><?= $row['address'] ?></strong></p>
-    <p>- distrito : <strong><?= $row['distrito'] ?></strong></p>
-    <p>- tipo de loza : <strong><?= $row['tipo_cancha'] ?></strong></p>
+    <h2>informacion del la loza <?= $field['name'] ?></h2>
+    <p>- precio X hora :<strong><?= $field['rental_price'] ?>$</strong></p>
+    <p>- sucursal : <strong><?= $field['nombre_sucursal'] ?></strong></p>
+    <p>- direccion : <strong><?= $field['address'] ?></strong></p>
+    <p>- distrito : <strong><?= $field['distrito'] ?></strong></p>
+    <p>- tipo de loza : <strong><?= $field['tipo_cancha'] ?></strong></p>
   </div>
 
 
@@ -33,11 +32,11 @@
       <!-- aqui podriamos hacer que la tabla de fields tenga un campo 
            "maximo de horas a alquilar en vez de darle valores quemados" 
       -->
-      <option value="">1 hora (<?= $row['rental_price'] * 1 ?>$)</option>
-      <option value="">2 horas (<?= $row['rental_price'] * 2 ?>$)</option>
-      <option value="">3 horas (<?= $row['rental_price'] * 3 ?>$)</option>
-      <option value="">4 horas (<?= $row['rental_price'] * 4 ?>$)</option>
-      <option value="">5 horas (<?= $row['rental_price'] * 5 ?>$)</option>
+      <option value="">1 hora (<?= $field['rental_price'] * 1 ?>$)</option>
+      <option value="">2 horas (<?= $field['rental_price'] * 2 ?>$)</option>
+      <option value="">3 horas (<?= $field['rental_price'] * 3 ?>$)</option>
+      <option value="">4 horas (<?= $field['rental_price'] * 4 ?>$)</option>
+      <option value="">5 horas (<?= $field['rental_price'] * 5 ?>$)</option>
     </select>
 
     <h2>aqui van las horas disponibles que tiene esta sucursal</h2>
@@ -68,6 +67,9 @@
     }
 
     ?>
+
+    <button>generar reserva</button>
+
   </div>
 
 </section>
