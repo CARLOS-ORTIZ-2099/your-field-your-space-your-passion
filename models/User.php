@@ -5,25 +5,30 @@ namespace Models;
 class User
 {
 
-  public  $name;
-  public  $last_name;
-  public  $email;
-  public  $password;
-  public  $is_admin;
-  public  $token;
-  public  $confirm;
-  public $errors = [];
+  protected  $name;
+  protected  $last_name;
+  protected  $email;
+  protected  $password;
+  protected  $is_admin;
+  protected  $token;
+  protected  $confirm;
+  // esto no define a un usuario entonces no deberia ser parte de una instancia
+  // mas bien deberia ser parte de la clase ya que es una propiedad general
+  protected static  $messages = [
+    'errors' => [],
+    'info' => []
+  ];
   // podriamos hacer que esta propiedad en esta clase sea de instancia
   // los potenciales problemas si convertimos esta propiedad en una de instancia seria que
   // si en un futuro agrego metodos estaticos que necesiten acceder a la 
-  // varaibel de $db no podria
+  // varaibel de $db no podria, ya que estos metodos estaticos no tienen this
   protected static $db;
-
+  // ya se vio
   public static function setDb($connect)
   {
     self::$db = $connect;
   }
-
+  // ya se vio
   public function __construct($arguments = [])
   {
     $this->name = $arguments['name'] ?? null;
@@ -32,45 +37,61 @@ class User
     $this->password = $arguments['password'] ?? null;
   }
 
+  // ya se vio
   public function validateFieldsRegister()
   {
     if (!$this->name) {
-      $this->errors['name'] = 'el nombre es obligatorio';
+      self::$messages['errors']['name'] = 'el nombre es obligatorio';
     }
     if (!$this->last_name) {
-      $this->errors['last_name'] = 'el last_name es obligatorio';
+      self::$messages['errors']['last_name'] = 'el last_name es obligatorio';
     }
     if (!$this->email) {
-      $this->errors['email'] = 'el email es obligatorio';
+      self::$messages['errors']['email'] = 'el email es obligatorio';
     }
     if (!$this->password) {
-      $this->errors['password'] = 'el password es obligatorio';
+      self::$messages['errors']['password'] = 'el password es obligatorio';
     }
     if ($this->password && strlen($this->password) < 6) {
-      $this->errors['password'] = 'el password debe ser de minimo 6 caracteres';
+      self::$messages['errors']['password'] = 'el password debe ser de minimo 6 caracteres';
     }
 
-    return $this->errors;
+    return self::$messages;
   }
 
+  // ya se vio
   public  function validateFieldsLogin()
   {
     if (!$this->email) {
-      $this->errors['email'] = 'el email es obligatorio';
+      self::$messages['errors']['email'] = 'el email es obligatorio';
     }
     if (!$this->password) {
-      $this->errors['password'] = 'el password es obligatorio';
+      self::$messages['errors']['password'] = 'el password es obligatorio';
     }
-    return $this->errors;
+    return self::$messages;
   }
 
-  public function getOne()
+  // ya se vio
+  public static function getOne($key, $value)
   {
-    $query = "SELECT * FROM users WHERE email = '{$this->email}'";
+    $query = "SELECT * FROM users WHERE {$key} = '{$value}'";
     $result = self::$db->query($query);
-    return $result;
+    $result = self::transformData($result);
+    //debuguear($result);
+    return array_shift($result);
   }
 
+  // ya se vio
+  public static function transformData($data)
+  {
+    $registers = [];
+    while ($row = $data->fetch_assoc()) {
+      $registers[] = $row;
+    }
+    return $registers;
+  }
+
+  // ya se vio
   public function save()
   {
     $query = "INSERT INTO users (name, last_name, email, password)
@@ -81,10 +102,12 @@ class User
     if ($result) {
       // resetear objeto 
       $this->resetear();
-      $this->errors['success'] = 'registrado con exito';
+      //$this->errors['success'] = 'registrado con exito';
+      self::$messages['info']['success'] = 'registrado con exito';
     }
   }
 
+  // ya se vio
   public function resetear()
   {
     foreach (get_object_vars($this) as $key => $value) {
@@ -92,31 +115,48 @@ class User
     }
   }
 
+  // ya se vio
   public function passwordHash()
   {
     $this->password = password_hash($this->password, PASSWORD_BCRYPT);
   }
 
-  public function passwordVerify($data)
+  // ya se vio
+  public function passwordVerify($password)
   {
-    $user = $data->fetch_assoc();
-    // debuguear($user);
-    $result =  password_verify($this->password, $user['password']);
-    debuguear($result);
+    $result =  password_verify($this->password, $password);
     if ($result) {
       return true;
     }
-    $this->errors['passwordBad'] = 'el password es incorrecto';
+    self::$messages['errors']['badrequest'] = 'el password es incorrecto';
   }
 
 
-  public function setErrors($key, $value)
+  // ya se vio
+  public static function setMessage($type, $data)
   {
-    $this->errors[$key] = $value;
+    self::$messages[$type] = $data;
+    //debuguear(self::$messages);
   }
 
-  public function getErrors()
+  // ya se vio
+  public static function getMessages()
   {
-    return $this->errors;
+
+    return self::$messages;
+  }
+
+  // ya se vio
+  public function getProperty($property)
+  {
+    $res = $this->$property;
+    return $res;
+  }
+
+  // ya se vio
+  public function getValues()
+  {
+
+    return get_object_vars($this);
   }
 }

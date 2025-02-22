@@ -10,45 +10,69 @@ class UserController
 
   public static function login($router)
   {
+
+    // si ya existe el usuario manralo a la home
+    session_start();
+    authPublic();
     $newUser = new User;
-    $errores = [];
+    $messages = [];
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $newUser = new User($_POST);
-      $errores = $newUser->validateFieldsLogin();
-      if (empty($errores)) {
-        $res =  $newUser->getOne();
-        debuguear($res);
-        if ($res->num_rows == 0) {
-          $newUser->setErrors('notFound', 'usuario no encontrado');
+      $messages = $newUser->validateFieldsLogin();
+      if (empty($messages['errors'])) {
+        $property = $newUser->getProperty('email');
+        //$user =  $newUser->getOne();
+        $user = User::getOne('email', $property);
+        if (!$user) {
+          User::setMessage(
+            'errors',
+            ['badrequest' => 'usuario no encontrado']
+          );
+          //$newUser->setErrors('notFound', 'usuario no encontrado');
         } else {
-          if ($newUser->passwordVerify($res)) {
+          if ($newUser->passwordVerify($user['password'])) {
+            // crear session
+            //debuguear($user);
+            $_SESSION['user'] = [
+              'name' => $user['name'],
+              'lastname' => $user['last_name'],
+              'email' => $user['email'],
+              'is_admin' => $user['is_admin']
+            ];
+            //debuguear($_SESSION);
             header('Location:/');
           }
         }
       }
     }
-
-    $errores = $newUser->getErrors();
+    $messages = User::getMessages();
+    $newUser = $newUser->getValues();
     $router->render('auth/login.php', [
       'user' => $newUser,
-      'errores' => $errores
+      'errors' => $messages['errors'],
+      'info' => $messages['info'],
     ]);
   }
 
   public static function register($router)
   {
+    session_start();
+    authPublic();
     $newUser = new User;
-    $errores = [];
+    $messages = [];
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $newUser = new User($_POST);
-      $errores = $newUser->validateFieldsRegister();
-      // debuguear($errores);
-      if (empty($errores)) {
-        $res =  $newUser->getOne();
-        //debuguear($res);
-        if ($res->num_rows > 0) {
-          $newUser->setErrors('duplicado', 'intenta con otro email');
+      $messages = $newUser->validateFieldsRegister();
+      //debuguear($messages);
+      if (empty($messages['errors'])) {
+        $property = $newUser->getProperty('email');
+        $user = User::getOne('email', $property);
+        if ($user) {
+          User::setMessage(
+            'errors',
+            ['badrequest' => 'intenta con otro email']
+          );
         } else {
           $newUser->passwordHash();
           // al ejecutar el metodo save vamos a resetear el objeto, es decir
@@ -59,15 +83,33 @@ class UserController
         }
       }
     }
-    $errores = $newUser->getErrors();
+    $messages = User::getMessages();
+    /* debuguear($messages); */
+    // aqui debemos crear un metodo que recopile todas las propiedades de la instancia
+    $newUser = $newUser->getValues();
+    //debuguear($newUser);
     $router->render(
       'auth/register.php',
       [
         'user' => $newUser,
-        'errores' => $errores
+        'errors' => $messages['errors'],
+        'info' => $messages['info'],
       ]
     );
   }
 
-  // CONTINUAR AQUI
+  public static function logout()
+  {
+    session_start();
+    $_SESSION = [];
+    //debuguear($_SESSION);
+    header('Location:/');
+  }
+
+  public static function profile($router)
+  {
+    session_start();
+    is_auth();
+    $router->render('auth/profile.php');
+  }
 }

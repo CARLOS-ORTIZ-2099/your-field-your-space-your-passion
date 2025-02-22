@@ -1,20 +1,20 @@
 <section>
   <h2>inicia sesion</h2>
-  <?= $errores['notFound'] ?? '' ?>
-  <?= $errores['passwordBad'] ?? '' ?>
+  <?= $errors['badrequest'] ?? '' ?>
+  <!--  <?= $errors['passwordBad'] ?? '' ?> -->
   <!--   <?= debuguear($user); ?>
-  <?= debuguear($errores); ?> -->
+  <?= debuguear($errors); ?> -->
 
   <form action="/login" method="POST">
     <label for="email">your email</label>
-    <input type="email" id="email" name="email" value="<?= $user->email ?? '' ?>">
+    <input type="email" id="email" name="email" value="<?= $user['email'] ?? '' ?>">
 
-    <?= $errores['email'] ?? '' ?>
+    <?= $errors['email'] ?? '' ?>
 
     <label for="password">your password</label>
-    <input type="password" id="password" name="password" value="<?= $user->password ?? '' ?>">
+    <input type="password" id="password" name="password" value="<?= $user['password'] ?? '' ?>">
 
-    <?= $errores['password'] ?? '' ?>
+    <?= $errors['password'] ?? '' ?>
 
     <input type="submit" value="entrar">
 

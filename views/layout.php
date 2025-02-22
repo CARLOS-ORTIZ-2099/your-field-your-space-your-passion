@@ -15,12 +15,25 @@
         <a href="/">logo empresa</a>
       </span>
     </div>
-    <nav>
-      <a href="/about">nosotros</a>
-      <a href="/fields">alquileres</a>
-      <a href="/blog">blog</a>
-      <a href="/login">inicia session</a>
-    </nav>
+    <?php $urlpath = $_SERVER['PATH_INFO'] ?? '/'; ?>
+    <?php if ($urlpath === '/profile'): ?>
+      <?php require_once __DIR__ . '/template/nav-profile.php' ?>
+    <?php else: ?>
+      <nav>
+        <a href="/aboutUs">about us</a>
+        <a href="/fields">fields</a>
+        <a href="/blog">blog</a>
+        <?php if (isset($_SESSION['user'])) : ?>
+          <a href="/profile"><?= 'hola' . ' ' . $_SESSION['user']['name'] ?></a>
+          <a href="/logout">logout</a>
+        <?php else : ?>
+          <a href='/login'>login</a>
+        <?php endif; ?>
+
+      </nav>
+    <?php endif; ?>
+
+
   </header>
 
 
