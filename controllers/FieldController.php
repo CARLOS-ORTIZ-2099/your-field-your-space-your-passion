@@ -14,23 +14,10 @@ class FieldController
     // devuelve un array de arrays asociativos donde cada array representa
     // un campo deportivo
     session_start();
-
-    // capturar tipo y distrito para buscar por dichos criterios
-    $type = $_GET['type'] ?? '';
-    $district = $_GET['district'] ?? '';
-    if ($type && $district) {
-      debuguear($_GET);
-      Field::getFieldsFilters($type, $district);
-      $fields = '';
-    } else {
-      $fields = Field::get();
-    }
-
-
-    $router->render('fields/fields.php', [
-      'fields' => $fields
-    ]);
+    $router->render('fields/fields.php');
   }
+
+
 
   public static function field($router)
   {

@@ -45,6 +45,7 @@
     Copyright @2025 - Todos los derechos reservados
   </footer>
 
+  <?php echo $script ?? null; ?>
 </body>
 
 </html>

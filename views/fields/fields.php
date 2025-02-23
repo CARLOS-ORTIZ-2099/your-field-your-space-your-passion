@@ -2,10 +2,10 @@
 
 
   <aside>
+    <form class="form" action="">
 
-    <form action="">
       <label for="deport">filtrar por deporte</label>
-      <select name="type" id="type">
+      <select class="type" name="type" id="type">
         <option value="">---</option>
         <option value="1">futbol</option>
         <option value="2">voley</option>
@@ -14,7 +14,7 @@
       </select>
 
       <label for="district">filtrar por distrito</label>
-      <select name="district" id="district">
+      <select class="district" name="district" id="district">
         <option value="">---</option>
         <option value="1">miraflores</option>
         <option value="2">surco</option>
@@ -28,26 +28,18 @@
       <input type="submit" value="filtrar">
       <input type="submit" value="limpiar">
 
-
-
     </form>
-
-
   </aside>
 
+  <h2>Alquileres</h2>
 
-  <article>
-    <h2>Alquileres</h2>
-    <?php foreach ($fields as $field) : ?>
-      <h3><?= $field['name'] ?></h3>
-      <img src="<?= '/images/estadio.webp' ?>" alt="image-estadio">
-      <div>
-        <span> apertura: <strong><?= $field['opening_hours'] ?></strong></span>
-        <span> cierre: <strong><?= $field['closing_time'] ?></strong></span>
-      </div>
-      <a href="/field?id=<?= $field['id'] ?>">ver sucursal</a>
-    <?php endforeach; ?>
+  <div class="fields-container">
+
+  </div>
 
 
+  <?php
+  $script = "<script src='js/index.js'></script>";
+  ?>
 
 </section>

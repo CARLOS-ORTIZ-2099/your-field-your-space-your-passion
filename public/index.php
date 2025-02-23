@@ -4,6 +4,7 @@ require_once __DIR__ . '/../includes/app.php';
 
 
 use AppRouter\Router;
+use Controllers\ApiController;
 use Controllers\FieldController;
 use Controllers\StaticController;
 use Controllers\UserController;
@@ -20,6 +21,9 @@ $newRouter->get('/blog', [StaticController::class, 'blog']);
 $newRouter->get('/fields', [FieldController::class, 'fields']);
 // obtener un campo en especifico
 $newRouter->get('/field', [FieldController::class, 'field']);
+
+// api 
+$newRouter->get('/getFields', [ApiController::class, 'getFields']);
 
 
 // rutas para autenticacion de usuarios

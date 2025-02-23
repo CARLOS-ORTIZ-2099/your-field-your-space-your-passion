@@ -15,10 +15,14 @@ class Field
   }
 
 
-  public static function get()
+  public static function get($limit)
   {
 
-    $query = 'SELECT * FROM fields';
+    $query = 'SELECT * FROM fields ';
+    if ($limit) {
+      $query .= $limit;
+    }
+    //debuguear($query);
     // esto devuelve un objeto de consulta
     // debemos hacer que "transforme" la data en formato legible
     // para mandarselo al controlador y este posteriormente la mande al 
@@ -33,19 +37,18 @@ class Field
   {
     // CONTINUAR AQUI
     // aqui buscar las lozas deportivas por ditrito y por tipo
-    $query = "SELECT fields.*, branches.name AS nombre_sucursal, branches.address,
-    branches.image, districts.name AS distrito, types.name AS tipo_cancha
-    FROM fields 
-    INNER JOIN branches 
-    ON fields.branch_id = branches.id
-    INNER JOIN districts
-    ON branches.district_id = districts.id
-    INNER JOIN types
-    ON fields.type_id = types.id 
-    WHERE fields.type_id = {$type} AND districts.id = {$district};";
+    $query = "SELECT fields.*, branches.district_id AS ID_DISTRITO, districts.id AS ID_DISTRITO_TABLA, districts.name AS NOMBRE_DISTRITO FROM fields 
+      INNER JOIN  types
+      ON fields.type_id = types.id
+      INNER JOIN branches
+      ON fields.branch_id = branches.id
+      INNER JOIN districts
+      ON branches.district_id = districts.id
+      WHERE types.id = $type AND districts.id = $district;";
     $result =  self::$db->query($query);
     $result = self::transformData($result);
-    debuguear($result);
+    //debuguear($result);
+    return $result;
   }
 
 
