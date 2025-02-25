@@ -26,7 +26,7 @@ class FieldController
     //debuguear($_GET);
     $id = $_GET['id'];
     $field = Field::getOneById($id);
-    //debuguear($field);
+    debuguear($field);
     $router->render('field/field.php', [
       'field' => $field
     ]);

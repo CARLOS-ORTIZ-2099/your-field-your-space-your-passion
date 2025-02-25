@@ -5,7 +5,7 @@
     <form class="form" action="">
 
       <label for="deport">filtrar por deporte</label>
-      <select class="type" name="type" id="type">
+      <select class="type select" name="type" id="type">
         <option value="">---</option>
         <option value="1">futbol</option>
         <option value="2">voley</option>
@@ -14,7 +14,7 @@
       </select>
 
       <label for="district">filtrar por distrito</label>
-      <select class="district" name="district" id="district">
+      <select class="district select" name="district" id="district">
         <option value="">---</option>
         <option value="1">miraflores</option>
         <option value="2">surco</option>
@@ -25,8 +25,8 @@
       </select>
 
       <br>
-      <input type="submit" value="filtrar">
-      <input type="submit" value="limpiar">
+      <input class="filtrar " type="submit" value="filtrar" disabled>
+      <input class="limpiar " type="submit" value="limpiar" disabled>
 
     </form>
   </aside>
@@ -39,7 +39,7 @@
 
 
   <?php
-  $script = "<script src='js/index.js'></script>";
+  $script = "<script src='js/fields.js'></script>";
   ?>
 
 </section>

@@ -1,6 +1,7 @@
 <?php
 
 use Models\Field;
+use Models\Reservation;
 use Models\User;
 
 require 'functions.php';
@@ -14,3 +15,4 @@ require __DIR__ . '/../vendor/autoload.php';
 
 Field::setDb($db);
 User::setDb($db);
+Reservation::setDb($db);

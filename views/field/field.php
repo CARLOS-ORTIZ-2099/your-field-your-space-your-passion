@@ -22,9 +22,11 @@
     $fechaMax->modify("+1 year");
     $fechaMax = $fechaMax->format("Y-m-d");
     ?>
+
+
     <h2>has tu reserva AQUI</h2>
     <label for="date">elige tu fecha</label>
-    <input id="date" type="date" min="<?= date('Y-m-d') ?>" max="<?= $fechaMax ?>">
+    <input class="date" id="date" type="date" min="<?= date('Y-m-d') ?>" max="<?= $fechaMax ?>">
 
     <label for="hours">elige la cantidad de horas</label>
     <select name="hours" id="hours">
@@ -71,5 +73,9 @@
     <button>generar reserva</button>
 
   </div>
+
+  <?php
+  $script = "<script src='js/field.js'></script>";
+  ?>
 
 </section>

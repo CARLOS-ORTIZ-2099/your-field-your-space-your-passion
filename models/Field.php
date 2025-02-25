@@ -15,27 +15,21 @@ class Field
   }
 
 
-  public static function get($limit)
+  public static function get($skip)
   {
 
     $query = 'SELECT * FROM fields ';
-    if ($limit) {
-      $query .= $limit;
+    if (is_numeric($skip)) {
+      $query .= " LIMIT 3 OFFSET {$skip}";
     }
     //debuguear($query);
-    // esto devuelve un objeto de consulta
-    // debemos hacer que "transforme" la data en formato legible
-    // para mandarselo al controlador y este posteriormente la mande al 
-    // cliente
     $result =  self::$db->query($query);
-    // procesar la data y convertirlo en un array de objetos
     $result = self::transformData($result);
     return $result;
   }
 
-  public static function getFieldsFilters($type, $district)
+  public static function getFields($type, $district, $skip)
   {
-    // CONTINUAR AQUI
     // aqui buscar las lozas deportivas por ditrito y por tipo
     $query = "SELECT fields.*, branches.district_id AS ID_DISTRITO, districts.id AS ID_DISTRITO_TABLA, districts.name AS NOMBRE_DISTRITO FROM fields 
       INNER JOIN  types
@@ -44,7 +38,10 @@ class Field
       ON fields.branch_id = branches.id
       INNER JOIN districts
       ON branches.district_id = districts.id
-      WHERE types.id = $type AND districts.id = $district;";
+      WHERE types.id = $type AND districts.id = $district";
+    if (is_numeric($skip)) {
+      $query .= " LIMIT 2 OFFSET {$skip}";
+    }
     $result =  self::$db->query($query);
     $result = self::transformData($result);
     //debuguear($result);
