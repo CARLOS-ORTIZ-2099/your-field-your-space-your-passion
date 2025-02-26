@@ -15,33 +15,44 @@ class Field
   }
 
 
-  public static function get($skip)
-  {
-
-    $query = 'SELECT * FROM fields ';
-    if (is_numeric($skip)) {
-      $query .= " LIMIT 3 OFFSET {$skip}";
-    }
-    //debuguear($query);
-    $result =  self::$db->query($query);
-    $result = self::transformData($result);
-    return $result;
-  }
-
-  public static function getFields($type, $district, $skip)
+  public static function get($skip, $type = null, $district = null)
   {
     // aqui buscar las lozas deportivas por ditrito y por tipo
-    $query = "SELECT fields.*, branches.district_id AS ID_DISTRITO, districts.id AS ID_DISTRITO_TABLA, districts.name AS NOMBRE_DISTRITO FROM fields 
+    // para no hacer uniones innecesarias comprobar si solo se filtra por distrito o por tipo
+    $query = "SELECT fields.* FROM fields";
+    // aqui comprobar si llega el type y el district por que puede que el usuario solo halla filtrado por uno de ellos
+    // si existen ambos
+    if ($type && $district) {
+      $query .= "
       INNER JOIN  types
       ON fields.type_id = types.id
       INNER JOIN branches
       ON fields.branch_id = branches.id
       INNER JOIN districts
-      ON branches.district_id = districts.id
-      WHERE types.id = $type AND districts.id = $district";
-    if (is_numeric($skip)) {
-      $query .= " LIMIT 2 OFFSET {$skip}";
+      ON branches.district_id = districts.id";
+      $query .= " WHERE types.id = $type AND districts.id = $district";
     }
+    //si solo existe type
+    else if ($type) {
+      $query .= "
+      INNER JOIN  types
+      ON fields.type_id = types.id";
+      $query .= " WHERE types.id = $type";
+    }
+    // si solo existe district
+    else if ($district) {
+      $query .= "
+      INNER JOIN branches
+      ON fields.branch_id = branches.id
+      INNER JOIN districts
+      ON branches.district_id = districts.id";
+      $query .= " WHERE districts.id = $district";
+    }
+
+    if (is_numeric($skip)) {
+      $query .= " LIMIT 3 OFFSET {$skip}";
+    }
+    // debuguear($query);
     $result =  self::$db->query($query);
     $result = self::transformData($result);
     //debuguear($result);

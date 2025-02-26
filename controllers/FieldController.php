@@ -2,19 +2,22 @@
 
 namespace  Controllers;
 
+use Models\District;
 use Models\Field;
-
+use Models\Type;
 
 class FieldController
 {
 
   public static function fields($router)
   {
-    // aqui debemos comunicarnos con el modelo
-    // devuelve un array de arrays asociativos donde cada array representa
-    // un campo deportivo
     session_start();
-    $router->render('fields/fields.php');
+    $types = Type::get();
+    $districts = District::get();
+    $router->render('fields/fields.php', [
+      'types' => $types,
+      'districts' => $districts
+    ]);
   }
 
 
@@ -24,9 +27,17 @@ class FieldController
     session_start();
     // aqui obtnemos el id de la loza deportiva que queremos ver
     //debuguear($_GET);
-    $id = $_GET['id'];
+    $id = $_GET['id'] ?? null;
+    // comprobar que sea un id valido y que exista
+    if (!$id || !is_numeric($id)) {
+      header('Location:/');
+      // debuguear('no valido');
+    }
     $field = Field::getOneById($id);
-    debuguear($field);
+    //debuguear($field);
+    if (!$field) {
+      header('Location:/');
+    }
     $router->render('field/field.php', [
       'field' => $field
     ]);

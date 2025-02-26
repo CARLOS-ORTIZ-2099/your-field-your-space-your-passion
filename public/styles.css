@@ -5,3 +5,7 @@ body {
 img {
   width: 350px;
 }
+
+.select-hour {
+  background-color: rgb(74, 189, 189);
+}

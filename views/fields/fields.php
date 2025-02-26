@@ -1,27 +1,22 @@
 <section>
 
-
   <aside>
     <form class="form" action="">
 
       <label for="deport">filtrar por deporte</label>
       <select class="type select" name="type" id="type">
         <option value="">---</option>
-        <option value="1">futbol</option>
-        <option value="2">voley</option>
-        <option value="3">basquet</option>
-        <option value="4">tenis</option>
+        <?php foreach ($types as $type): ?>
+          <option value="<?= $type['id'] ?>"><?= $type['name'] ?></option>
+        <?php endforeach; ?>
       </select>
 
       <label for="district">filtrar por distrito</label>
       <select class="district select" name="district" id="district">
         <option value="">---</option>
-        <option value="1">miraflores</option>
-        <option value="2">surco</option>
-        <option value="3">la molina</option>
-        <option value="4">chorrillos</option>
-        <option value="5">san borja</option>
-        <option value="6">san juan de miraflores</option>
+        <?php foreach ($districts as $district): ?>
+          <option value="<?= $district['id'] ?>"><?= $district['name'] ?></option>
+        <?php endforeach; ?>
       </select>
 
       <br>

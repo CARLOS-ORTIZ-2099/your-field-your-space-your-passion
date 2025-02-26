@@ -1,7 +1,9 @@
 <?php
 
+use Models\District;
 use Models\Field;
 use Models\Reservation;
+use Models\Type;
 use Models\User;
 
 require 'functions.php';
@@ -16,3 +18,5 @@ require __DIR__ . '/../vendor/autoload.php';
 Field::setDb($db);
 User::setDb($db);
 Reservation::setDb($db);
+Type::setDb($db);
+District::setDb($db);

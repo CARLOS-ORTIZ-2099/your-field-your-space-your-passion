@@ -29,46 +29,24 @@
     <input class="date" id="date" type="date" min="<?= date('Y-m-d') ?>" max="<?= $fechaMax ?>">
 
     <label for="hours">elige la cantidad de horas</label>
-    <select name="hours" id="hours">
+    <select class="quantity-hours" name="hours" id="hours">
       <option value="">---</option>
       <!-- aqui podriamos hacer que la tabla de fields tenga un campo 
            "maximo de horas a alquilar en vez de darle valores quemados" 
       -->
-      <option value="">1 hora (<?= $field['rental_price'] * 1 ?>$)</option>
-      <option value="">2 horas (<?= $field['rental_price'] * 2 ?>$)</option>
-      <option value="">3 horas (<?= $field['rental_price'] * 3 ?>$)</option>
-      <option value="">4 horas (<?= $field['rental_price'] * 4 ?>$)</option>
-      <option value="">5 horas (<?= $field['rental_price'] * 5 ?>$)</option>
+      <option value="<?= $field['rental_price'] ?>-1">1 hora (<?= $field['rental_price'] * 1 ?>$)</option>
+      <option value="<?= $field['rental_price'] ?>-2">2 horas (<?= $field['rental_price'] * 2 ?>$)</option>
+      <option value="<?= $field['rental_price'] ?>-3">3 horas (<?= $field['rental_price'] * 3 ?>$)</option>
+      <option value="<?= $field['rental_price'] ?>-4">4 horas (<?= $field['rental_price'] * 4 ?>$)</option>
+      <option value="<?= $field['rental_price'] ?>-5">5 horas (<?= $field['rental_price'] * 5 ?>$)</option>
     </select>
 
-    <h2>aqui van las horas disponibles que tiene esta sucursal</h2>
-    <label for="time">elige la hora para alquilar</label>
-    <?php
-    // horas desde que abre hasta que cierra la sucursal
-    $hours = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
-    // arreglo de horas reservadas
-    $horasOcupadas = [
-      10 => 13,
-      14 => 15,
-      15 => 16,
-      20 => 22
-    ];
 
-    /* aqui lo que hacemos es que comprobamos si el arreglod e horas ocupadas esta la hora que estamos iterando actualmente si es asi slatamos tantas posiciones como la diferencia de las hora de incio y fin esto para que el usuario no pueda seleccionar horas ya reservadas */
-    $init = 0;
-    while ($init < count($hours)) {
-      if (array_key_exists($hours[$init], $horasOcupadas)) {
-        $substract = $horasOcupadas[$hours[$init]] - $hours[$init];
-        debuguear($substract);
-        $init += $substract;
-        continue;
-      }
-      //debuguear($hours[$init]);
-      echo '<br/> <button>' . $hours[$init] . '</button> <br/>';
-      $init++;
-    }
+    <!-- AQUI VAN LAS HORAS DISPONIBLES ESTAS VENDRAN DE LA BASE DEL BACKEND -->
+    <div class="free-hours-container">
 
-    ?>
+    </div>
+
 
     <button>generar reserva</button>
 
