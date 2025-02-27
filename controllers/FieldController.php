@@ -39,7 +39,8 @@ class FieldController
       header('Location:/');
     }
     $router->render('field/field.php', [
-      'field' => $field
+      'field' => $field,
+      'id' => $_SESSION['user']['id']
     ]);
   }
 }

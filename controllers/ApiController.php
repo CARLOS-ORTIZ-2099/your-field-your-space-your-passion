@@ -52,7 +52,13 @@ class ApiController
   }
 
 
-  // obtener uno solo
-
-
+  // crear reserva 
+  public static function saveReservation()
+  {
+    //cuando le mandamos datos en formato json la superglobal POST no lee esos
+    // datos, solo lee los datos que provengan de campos de formularios
+    $newReservation = new Reservation($_POST);
+    $result = $newReservation->save();
+    echo json_encode(['result' => $result]);
+  }
 }

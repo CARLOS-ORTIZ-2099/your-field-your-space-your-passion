@@ -9,3 +9,7 @@ img {
 .select-hour {
   background-color: rgb(74, 189, 189);
 }
+
+.hidden {
+  visibility: hidden;
+}

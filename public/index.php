@@ -26,6 +26,7 @@ $newRouter->get('/field', [FieldController::class, 'field']);
 $newRouter->get('/api/getFields', [ApiController::class, 'getFields']);
 $newRouter->get('/api/getFieldsFilters', [ApiController::class, 'getFieldsFilters']);
 $newRouter->get('/api/getReservations', [ApiController::class, 'getReservations']);
+$newRouter->post('/api/saveReservation', [ApiController::class, 'saveReservation']);
 
 // rutas para autenticacion de usuarios
 $newRouter->get('/login', [UserController::class, 'login']);

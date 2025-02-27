@@ -6,28 +6,103 @@ const reservation = {
   start_time: "",
   rental_date: "",
 };
+let busyHours = {};
 
 function init() {
-  showFreeHours();
+  selectDate();
   selectQuantityHours();
+  makeReservation();
+}
+
+function makeReservation() {
+  const button = document.querySelector(".button-reservation");
+  button.addEventListener("click", (e) => {
+    // antes de generar la reserva debemos validar que la cantidad de horas
+    // sean validas, es decir que no hallan cruze de horarios
+    const result = validateData();
+    if (!result) return;
+    getFieldId();
+    getUserId();
+    const data = createNewFormData();
+    saveReservation(data);
+  });
+}
+
+function validateData() {
+  const closing_time = document.getElementById("closing_time").value;
+  const { rental_time, start_time } = reservation;
+  const initTime = parseInt(start_time.slice(0, 3));
+  for (let i = initTime; i < initTime + parseInt(rental_time); i++) {
+    if (i >= parseInt(closing_time)) {
+      alert("elige una cantidad de horas menor");
+      return;
+    }
+    let hour = i < 10 ? `0${i}:00:00` : `${i}:00:00`;
+    if (busyHours[hour]) {
+      alert("hay un cruce de horarios");
+      return;
+    }
+  }
+  return true;
+}
+
+function createNewFormData() {
+  const data = new FormData();
+  for (let key in reservation) {
+    data.append(key, reservation[key]);
+  }
+  return data;
+}
+
+async function saveReservation(formData) {
+  try {
+    response = await fetch(`http://localhost:3000/api/saveReservation`, {
+      method: "POST",
+      body: formData,
+    });
+    const result = await response.json();
+    console.log(result);
+    if (!result.result) {
+      throw new Error("error inesperado");
+    }
+    alert("reserva creada correctamente");
+    location.reload();
+  } catch (error) {
+    alert("error inesperado intenta luego");
+  }
+}
+function getUserId() {
+  const userId = document.querySelector("#user-id");
+  reservation.user_id = userId.value;
+}
+
+function getFieldId() {
+  reservation.field_id = getIdUrlParams();
 }
 
 function selectQuantityHours() {
   const quantityHours = document.querySelector(".quantity-hours");
-  quantityHours.addEventListener("input", (e) => {
-    let pricePerHours = e.target.value.split("-");
+  quantityHours.addEventListener("input", ({ target }) => {
+    if (target.value == "") {
+      reservation.total_pay = "";
+      reservation.rental_time = "";
+      showReservationButton();
+      return;
+    }
+    let pricePerHours = target.value.split("-");
     reservation.total_pay = parseInt(pricePerHours[0] * pricePerHours[1]);
     reservation.rental_time = pricePerHours[1];
-    console.log(reservation);
+    showReservationButton();
   });
 }
 
-function showFreeHours() {
+function selectDate() {
   const inputDate = document.querySelector(".date");
-  inputDate.addEventListener("change", (e) => {
-    let date = e.target.value;
+  inputDate.addEventListener("change", ({ target }) => {
+    let date = target.value;
     reservation.rental_date = date;
-    console.log(reservation);
+    reservation.start_time = "";
+    showReservationButton();
     callApi(date);
   });
 }
@@ -39,16 +114,18 @@ async function callApi(date) {
     const response = await fetch(url);
     //console.log(response);
     if (!response.ok == 200) throw new Error("error desconocido");
-    let busyHours = await response.json();
-    //console.log(busyHours);
+    busyHours = await response.json();
+    console.log(busyHours);
     renderViewHours(busyHours);
   } catch (error) {
     console.log(error);
-    createTemplateMessage("ocurrio un error en el servidor, intenta luego");
+    alert("ocurrio un error en el servidor, intenta luego");
   }
 }
 
 function renderViewHours(busyHours) {
+  console.log(busyHours);
+  // CONTINUAR AQUI
   const freeHoursContainer = document.querySelector(".free-hours-container");
   const title = document.createElement("H2");
   title.innerText = "estas son las horas disponibles de la sucursal";
@@ -58,63 +135,49 @@ function renderViewHours(busyHours) {
   }
 
   freeHoursContainer.innerHTML = ``;
-  hours = [
-    "07:00:00",
-    "08:00:00",
-    "09:00:00",
-    "10:00:00",
-    "11:00:00",
-    "12:00:00",
-    "13:00:00",
-    "14:00:00",
-    "15:00:00",
-    "16:00:00",
-    "17:00:00",
-    "18:00:00",
-    "19:00:00",
-    "20:00:00",
-    "21:00:00",
-    "22:00:00",
-    "23:00:00",
-  ];
-  console.log(busyHours);
+  const hours = getHoursOpeningClose();
   let init = 0;
-  /* aqui lo que hacemos es que comprobamos si el arreglod e horas ocupadas esta la hora que estamos iterando 
-     actualmente si es asi slatamos tantas posiciones como la diferencia de las hora de incio y fin esto para
-     que el usuario no pueda seleccionar horas ya reservadas 
-  */
   while (init < hours.length) {
     if (busyHours[hours[init]]) {
       substract = subtractHours(busyHours[hours[init]], hours[init]);
-      console.log(substract);
       init += substract;
       continue;
     }
     const button = document.createElement("BUTTON");
     button.innerText = `${hours[init]}`;
-    button.value = hours[init];
+    button.id = hours[init];
     button.addEventListener("click", selectHour);
     freeHoursContainer.appendChild(button);
     init++;
   }
 }
 
-function selectHour(e) {
-  reservation.start_time = e.target.value;
-  console.log(reservation);
-  console.log(e.target);
-  // si ya existe el boton con la clse seleccionada
+function getHoursOpeningClose() {
+  const openingHours = document.getElementById("opening_hours").value;
+  const closing_time = document.getElementById("closing_time").value;
+  const hours = [];
+  for (let i = parseInt(openingHours); i < parseInt(closing_time); i++) {
+    let insert = i < 10 ? `0${i}:00:00` : `${i}:00:00`;
+    hours.push(insert);
+  }
+  return hours;
+}
+
+function selectHour({ target }) {
+  reservation.start_time = target.id;
   const buttonSelected = document.querySelector(".select-hour");
   if (buttonSelected) {
-    // lo quitamos
-    buttonSelected.classList.remove("select-hour");
-    e.target.classList.add("select-hour");
+    if (target.id == buttonSelected.id) {
+      buttonSelected.classList.remove("select-hour");
+      reservation.start_time = "";
+    } else {
+      buttonSelected.classList.remove("select-hour");
+      target.classList.add("select-hour");
+    }
   } else {
-    //buttonSelected.classList.add("select-hour");
-    e.target.classList.add("select-hour");
+    target.classList.add("select-hour");
   }
-  //const buttonSelected = e.target.classList.add("select-hour");
-  // CONTINUAR AQUI
+  showReservationButton();
 }
 
 function getIdUrlParams() {
@@ -125,26 +188,19 @@ function getIdUrlParams() {
 }
 
 function subtractHours(horaFinal, horaInicio) {
-  console.log(horaFinal, horaInicio);
-  // Función para convertir una hora "HH:MM:SS" a segundos
+  //console.log(horaFinal, horaInicio);
   const convertirASegundos = (hora) => {
     const partes = hora.split(":");
-    //console.log(partes);
     return (
-      //convirtiendo las horas en segundos 10*3600 = 36000
       parseInt(partes[0], 10) * 3600 +
-      // conviertiendo los minutos en segundos
       parseInt(partes[1], 10) * 60 +
-      // los segundos ya estan en segundos
       parseInt(partes[2], 10)
     );
   };
-
   const segundosFinal = convertirASegundos(horaFinal);
   const segundosInicio = convertirASegundos(horaInicio);
   const diferencia = segundosFinal - segundosInicio;
 
-  // convertir la diferencia a horas, minutos y segundos
   const horas = Math.floor(diferencia / 3600);
   return horas;
 }
@@ -155,4 +211,15 @@ function createTemplateMessage(message) {
      <h2>${message}</h2>
   `;
   fieldsContainer.appendChild(div);
+}
+
+function showReservationButton() {
+  const button = document.querySelector(".button-reservation");
+  for (let key in reservation) {
+    if (!reservation[key]) {
+      button.classList.add("hidden");
+      return;
+    }
+  }
+  button.classList.remove("hidden");
 }

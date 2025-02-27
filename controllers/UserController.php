@@ -38,7 +38,8 @@ class UserController
               'name' => $user['name'],
               'lastname' => $user['last_name'],
               'email' => $user['email'],
-              'is_admin' => $user['is_admin']
+              'is_admin' => $user['is_admin'],
+              'id' => $user['id']
             ];
             //debuguear($_SESSION);
             header('Location:/');
@@ -102,6 +103,7 @@ class UserController
   {
     session_start();
     $_SESSION = [];
+    // session_destroy();
     //debuguear($_SESSION);
     header('Location:/');
   }

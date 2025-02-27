@@ -43,6 +43,15 @@ class Reservation
     return $result;
   }
 
+
+  public function save()
+  {
+    $query = "INSERT INTO reservations (user_id, field_id, total_pay, rental_time, start_time, rental_date) 
+    VALUES ({$this->user_id}, {$this->field_id}, {$this->total_pay}, {$this->rental_time}, '{$this->start_time}', '{$this->rental_date}')";
+    $result = self::$db->query($query);
+    return $result;
+  }
+
   public static function transformData($data)
   {
     $registers = [];
