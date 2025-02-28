@@ -31,6 +31,8 @@ function makeReservation() {
 function validateData() {
   const closing_time = document.getElementById("closing_time").value;
   const { rental_time, start_time } = reservation;
+  console.log(reservation);
+  console.log(busyHours);
   const initTime = parseInt(start_time.slice(0, 3));
   for (let i = initTime; i < initTime + parseInt(rental_time); i++) {
     if (i >= parseInt(closing_time)) {
@@ -38,7 +40,7 @@ function validateData() {
       return;
     }
     let hour = i < 10 ? `0${i}:00:00` : `${i}:00:00`;
-    if (busyHours[hour]) {
+    if (checkHours(busyHours, hour)) {
       alert("hay un cruce de horarios");
       return;
     }
@@ -115,7 +117,7 @@ async function callApi(date) {
     //console.log(response);
     if (!response.ok == 200) throw new Error("error desconocido");
     busyHours = await response.json();
-    console.log(busyHours);
+    //console.log(busyHours);
     renderViewHours(busyHours);
   } catch (error) {
     console.log(error);
@@ -125,22 +127,25 @@ async function callApi(date) {
 
 function renderViewHours(busyHours) {
   console.log(busyHours);
-  // CONTINUAR AQUI
   const freeHoursContainer = document.querySelector(".free-hours-container");
   const title = document.createElement("H2");
-  title.innerText = "estas son las horas disponibles de la sucursal";
   title.classList.add("title-hours");
-  if (!document.querySelector(".title-hours")) {
-    freeHoursContainer.insertAdjacentElement("beforebegin", title);
-  }
 
   freeHoursContainer.innerHTML = ``;
   const hours = getHoursOpeningClose();
+  console.log(hours);
   let init = 0;
   while (init < hours.length) {
-    if (busyHours[hours[init]]) {
-      substract = subtractHours(busyHours[hours[init]], hours[init]);
-      init += substract;
+    const result = checkHours(busyHours, hours[init]);
+    console.log(result);
+    if (result) {
+      const buttonDisabled = document.createElement("BUTTON");
+      buttonDisabled.disabled = true;
+      buttonDisabled.classList.add("button-disabled");
+      buttonDisabled.innerText = `${hours[init]}`;
+      buttonDisabled.id = hours[init];
+      freeHoursContainer.appendChild(buttonDisabled);
+      init++;
       continue;
     }
     const button = document.createElement("BUTTON");
@@ -150,17 +155,54 @@ function renderViewHours(busyHours) {
     freeHoursContainer.appendChild(button);
     init++;
   }
+  if (!document.querySelector(".title-hours")) {
+    freeHoursContainer.insertAdjacentElement("beforebegin", title);
+  }
+  if (freeHoursContainer.childElementCount === 0) {
+    document.querySelector(".title-hours").innerText =
+      "no hay horas disponibles";
+  } else {
+    document.querySelector(".title-hours").innerText =
+      "estas son las horas disponibles de la sucursal";
+  }
+}
+
+function checkHours(busyHours, hour) {
+  let hourText = hour.slice(0, 2);
+  for (let key in busyHours) {
+    let keyText = key.slice(0, 2);
+    let valueText = busyHours[key].slice(0, 2);
+    if (parseInt(hourText) >= keyText && parseInt(hourText) < valueText) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function getHoursOpeningClose() {
-  const openingHours = document.getElementById("opening_hours").value;
-  const closing_time = document.getElementById("closing_time").value;
+  let openingHours = document.getElementById("opening_hours").value;
+  let closing_time = document.getElementById("closing_time").value;
+
+  let fullDate = getFullDate();
+  if (fullDate === reservation.rental_date) {
+    const hourCurrent = new Date().getHours() + 1;
+    openingHours = hourCurrent;
+  }
   const hours = [];
   for (let i = parseInt(openingHours); i < parseInt(closing_time); i++) {
     let insert = i < 10 ? `0${i}:00:00` : `${i}:00:00`;
     hours.push(insert);
   }
   return hours;
+}
+
+function getFullDate() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  const fullDate = `${year}-${month}-${day}`;
+  return fullDate;
 }
 
 function selectHour({ target }) {
@@ -185,24 +227,6 @@ function getIdUrlParams() {
   const urlParams = new URLSearchParams(queryString);
   const id = urlParams.get("id");
   return id;
-}
-
-function subtractHours(horaFinal, horaInicio) {
-  //console.log(horaFinal, horaInicio);
-  const convertirASegundos = (hora) => {
-    const partes = hora.split(":");
-    return (
-      parseInt(partes[0], 10) * 3600 +
-      parseInt(partes[1], 10) * 60 +
-      parseInt(partes[2], 10)
-    );
-  };
-  const segundosFinal = convertirASegundos(horaFinal);
-  const segundosInicio = convertirASegundos(horaInicio);
-  const diferencia = segundosFinal - segundosInicio;
-
-  const horas = Math.floor(diferencia / 3600);
-  return horas;
 }
 
 function createTemplateMessage(message) {

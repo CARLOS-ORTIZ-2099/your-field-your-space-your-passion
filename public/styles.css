@@ -13,3 +13,7 @@ img {
 .hidden {
   visibility: hidden;
 }
+
+.button-disabled {
+  color: skyblue;
+}

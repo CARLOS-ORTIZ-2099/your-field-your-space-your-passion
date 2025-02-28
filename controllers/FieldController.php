@@ -40,7 +40,7 @@ class FieldController
     }
     $router->render('field/field.php', [
       'field' => $field,
-      'id' => $_SESSION['user']['id']
+      'id' => $_SESSION['user']['id'] ?? null
     ]);
   }
 }

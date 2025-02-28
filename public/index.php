@@ -6,6 +6,7 @@ require_once __DIR__ . '/../includes/app.php';
 use AppRouter\Router;
 use Controllers\ApiController;
 use Controllers\FieldController;
+use Controllers\ReservationController;
 use Controllers\StaticController;
 use Controllers\UserController;
 
@@ -22,11 +23,15 @@ $newRouter->get('/fields', [FieldController::class, 'fields']);
 // obtener un campo en especifico
 $newRouter->get('/field', [FieldController::class, 'field']);
 
-// api 
+// rutas para la api 
 $newRouter->get('/api/getFields', [ApiController::class, 'getFields']);
 $newRouter->get('/api/getFieldsFilters', [ApiController::class, 'getFieldsFilters']);
 $newRouter->get('/api/getReservations', [ApiController::class, 'getReservations']);
 $newRouter->post('/api/saveReservation', [ApiController::class, 'saveReservation']);
+
+// rutas para las reservas
+$newRouter->get('/profile/my-reservations', [ReservationController::class, 'myReservations']);
+
 
 // rutas para autenticacion de usuarios
 $newRouter->get('/login', [UserController::class, 'login']);
@@ -35,6 +40,7 @@ $newRouter->get('/register', [UserController::class, 'register']);
 $newRouter->post('/register', [UserController::class, 'register']);
 $newRouter->get('/logout', [UserController::class, 'logout']);
 $newRouter->get('/profile', [UserController::class, 'profile']);
+
 
 $newRouter->execute();
 /* debuguear($newRouter); */

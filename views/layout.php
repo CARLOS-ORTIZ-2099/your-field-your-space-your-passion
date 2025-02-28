@@ -16,7 +16,10 @@
       </span>
     </div>
     <?php $urlpath = $_SERVER['PATH_INFO'] ?? '/'; ?>
-    <?php if ($urlpath === '/profile'): ?>
+    <!--  <?php debuguear($urlpath) ?> -->
+    <?php
+    // CONTINUAR AQUI
+    if ($urlpath === '/profile'): ?>
       <?php require_once __DIR__ . '/template/nav-profile.php' ?>
     <?php else: ?>
       <nav>
