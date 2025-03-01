@@ -177,12 +177,17 @@ VALUES(1, 1, 250, 3, '10:00', '2025-02-27') ,
 (1, 1, 250, 3, '07:00', '2025-02-28') ,
 (1, 1, 250, 3, '10:00', '2025-02-28') ;
 
-
-SELECT reservations.*, fields.name, fields.rental_price,
-(reservations.rental_time*fields.rental_price) AS NUEVO_TOTAL 
+-- consultando todas las reservas y uniendolas con la tabla fields
+SELECT reservations.*, fields.name AS field_name, fields.rental_price, types.name AS type_field, branches.name AS branch_name, branches.address
 FROM reservations 
 INNER JOIN fields 
 ON reservations.field_id = fields.id
+INNER JOIN types
+ON fields.type_id = types.id
+INNER JOIN branches
+ON fields.branch_id = branches.id
+WHERE reservations.user_id = 1;
 
+-- consultando todas las reservas de un usuario en especifico y uniendolas con la tabla fields
 
 

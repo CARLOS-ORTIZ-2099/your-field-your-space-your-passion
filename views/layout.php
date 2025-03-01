@@ -15,11 +15,10 @@
         <a href="/">logo empresa</a>
       </span>
     </div>
-    <?php $urlpath = $_SERVER['PATH_INFO'] ?? '/'; ?>
-    <!--  <?php debuguear($urlpath) ?> -->
+    <?php $urlNew = checkUserPath(); ?>
     <?php
-    // CONTINUAR AQUI
-    if ($urlpath === '/profile'): ?>
+
+    if ($urlNew[0] === 'profile'): ?>
       <?php require_once __DIR__ . '/template/nav-profile.php' ?>
     <?php else: ?>
       <nav>

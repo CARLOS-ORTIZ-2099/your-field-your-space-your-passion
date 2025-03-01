@@ -31,6 +31,9 @@ $newRouter->post('/api/saveReservation', [ApiController::class, 'saveReservation
 
 // rutas para las reservas
 $newRouter->get('/profile/my-reservations', [ReservationController::class, 'myReservations']);
+$newRouter->post('/profile/delete-reservation', [ReservationController::class, 'deleteReservation']);
+
+
 
 
 // rutas para autenticacion de usuarios

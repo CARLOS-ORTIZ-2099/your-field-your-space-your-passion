@@ -21,3 +21,23 @@ function authPublic()
     header('Location:/profile');
   }
 }
+
+function checkUserPath()
+{
+  $urlpath = $_SERVER['PATH_INFO'] ?? '/';
+  $urlNew =  explode('/', $urlpath);
+  array_shift($urlNew);
+  return $urlNew;
+}
+
+function campareDate($myReservation)
+{
+  $now = strtotime(date('Y-m-d'));
+
+  $rental_date = strtotime($myReservation);
+
+  if ($rental_date <= $now) {
+    return true;
+  }
+  return false;
+}
