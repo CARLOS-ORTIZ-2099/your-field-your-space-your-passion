@@ -25,6 +25,7 @@ function isEditMode() {
     reservation.total_pay = parseInt(pricePerHours[0] * pricePerHours[1]);
     reservation.rental_time = pricePerHours[1];
     callApi(reservation.rental_date);
+    console.log(reservation);
   }
 }
 
@@ -144,7 +145,7 @@ async function callApi(date) {
     if (edit) {
       url += `&edit=${edit}`;
     }
-    console.log(url);
+    //console.log(url);
     const response = await fetch(url);
     //console.log(response);
     if (!response.ok == 200) throw new Error("error desconocido");

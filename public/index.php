@@ -32,6 +32,7 @@ $newRouter->post('/api/updateReservation', [ApiController::class, 'updateReserva
 
 // rutas para las reservas
 $newRouter->get('/profile/my-reservations', [ReservationController::class, 'myReservations']);
+$newRouter->get('/profile/all-reservations', [ReservationController::class, 'allReservations']);
 $newRouter->post('/profile/delete-reservation', [ReservationController::class, 'deleteReservation']);
 
 

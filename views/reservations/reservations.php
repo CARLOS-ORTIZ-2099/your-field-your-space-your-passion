@@ -4,7 +4,14 @@
   <div class="my-reservations-container">
 
     <?php foreach ($myReservations as $myReservation): ?>
-      <h1><?= $myReservation['id'] ?></h1>
+      <div>
+        <span><strong>id_reservation:<?= $myReservation['id'] ?></strong></span>
+        <br>
+        <span><strong> user_id:<?= $myReservation['user_id'] ?></strong></span>
+        <br>
+        <span><strong> field_id:<?= $myReservation['field_id'] ?></strong></span>
+      </div>
+
       <article id="<?= $myReservation['id'] ?>">
         <p>
           <span>total a pagar :<strong><?= $myReservation['total_pay'] ?></strong></span>

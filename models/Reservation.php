@@ -49,7 +49,7 @@ class Reservation
   }
 
   // obtiene todas las reservas del usuario con uniones de otras tablas
-  public static function getReservationsUser($id)
+  public static function getReservationsUser($id, $admin = null)
   {
     $query = "SELECT reservations.*, fields.name AS field_name, fields.rental_price, types.name AS type_field, 
     branches.name AS branch_name, branches.address, 
@@ -60,19 +60,21 @@ class Reservation
     INNER JOIN types
     ON fields.type_id = types.id
     INNER JOIN branches
-    ON fields.branch_id = branches.id
-    WHERE reservations.user_id = {$id}";
+    ON fields.branch_id = branches.id";
+    if (!$admin) {
+      $query .= " WHERE reservations.user_id = {$id}";
+    }
     $result =  self::$db->query($query);
     $result = self::transformData($result);
     return $result;
   }
 
   // obtiene una sola reserva segun id
-  public static function getOneReservation($id, $field, $user_id)
+  public static function getOneReservation($reservationId, $fieldId, $userId)
   {
-    $query = "SELECT * FROM reservations WHERE id = {$id}";
-    if ($user_id) {
-      $query .= " AND user_id = {$user_id} AND field_id = {$field}";
+    $query = "SELECT * FROM reservations WHERE id = {$reservationId}";
+    if ($userId) {
+      $query .= " AND user_id = {$userId} AND field_id = {$fieldId}";
     }
     $result =  self::$db->query($query);
     $result = self::transformData($result);

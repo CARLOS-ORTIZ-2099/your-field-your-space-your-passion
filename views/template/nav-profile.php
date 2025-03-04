@@ -4,7 +4,7 @@
   <a href="/profile/my-reservations">my reservations</a>
   <a href="/logout">logout</a>
   <?php if ($_SESSION['user']['is_admin']): ?>
-    <a href="/see-all-reservations">see all reservations</a>
+    <a href="/profile/all-reservations">see all reservations</a>
     <a href="/see-branches">see branches</a>
     <a href="/see-fields">see fields</a>
   <?php endif; ?>

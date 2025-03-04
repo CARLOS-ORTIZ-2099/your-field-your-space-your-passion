@@ -26,29 +26,33 @@ class FieldController
   public static function field($router)
   {
     session_start();
-    $id = $_GET['id'] ?? null;
-    $edit = $_GET['edit'] ?? null;
-
-    if (!$id || !is_numeric($id)) {
+    //$id = $_GET['id'] ?? null;
+    $fieldId = $_GET['id'] ?? null;
+    //$edit = $_GET['edit'] ?? null;
+    $reservationId = $_GET['edit'] ?? null;
+    if (!$fieldId || !is_numeric($fieldId)) {
       header('Location:/');
       // debuguear('no valido');
     }
     $reservation = null;
-    if ($edit && !is_numeric($edit)) {
+    if ($reservationId && !is_numeric($reservationId)) {
       header('Location:/');
-    } 
-    elseif($edit && is_numeric($edit) && !isset($_SESSION['user'])){
+    } elseif ($reservationId && is_numeric($reservationId) && !isset($_SESSION['user'])) {
       header('Location:/');
-    }
-    elseif ($edit && is_numeric($edit) && isset($_SESSION['user'])) {
-      $id_user = $_SESSION['user']['id'] ;
-      $reservation = Reservation::getOneReservation($edit, $id, $id_user);
+    } elseif ($reservationId && is_numeric($reservationId) && isset($_SESSION['user'])) {
+      $userId = $_SESSION['user']['id'];
+      // CONTINUAR AQUI
+      $reservation = Reservation::getOneReservation(
+        $reservationId,
+        $fieldId,
+        $userId
+      );
       if (!$reservation) {
         header('Location:/');
       }
     }
 
-    $field = Field::getOneById($id);
+    $field = Field::getOneById($fieldId);
     //debuguear($field);
     if (!$field) {
       header('Location:/');
