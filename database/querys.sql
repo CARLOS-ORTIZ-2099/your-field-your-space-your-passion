@@ -188,6 +188,8 @@ INNER JOIN branches
 ON fields.branch_id = branches.id
 WHERE reservations.user_id = 1;
 
--- consultando todas las reservas de un usuario en especifico y uniendolas con la tabla fields
+-- editando reservas
+UPDATE reservations set rental_date = '', start_time = '' WHERE id = '' AND user_id ='' AND field_id = '';
+
 
 

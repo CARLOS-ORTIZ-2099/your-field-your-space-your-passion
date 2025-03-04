@@ -4,6 +4,7 @@ namespace  Controllers;
 
 use Models\District;
 use Models\Field;
+use Models\Reservation;
 use Models\Type;
 
 class FieldController
@@ -25,14 +26,28 @@ class FieldController
   public static function field($router)
   {
     session_start();
-    // aqui obtnemos el id de la loza deportiva que queremos ver
-    //debuguear($_GET);
     $id = $_GET['id'] ?? null;
-    // comprobar que sea un id valido y que exista
+    $edit = $_GET['edit'] ?? null;
+
     if (!$id || !is_numeric($id)) {
       header('Location:/');
       // debuguear('no valido');
     }
+    $reservation = null;
+    if ($edit && !is_numeric($edit)) {
+      header('Location:/');
+    } 
+    elseif($edit && is_numeric($edit) && !isset($_SESSION['user'])){
+      header('Location:/');
+    }
+    elseif ($edit && is_numeric($edit) && isset($_SESSION['user'])) {
+      $id_user = $_SESSION['user']['id'] ;
+      $reservation = Reservation::getOneReservation($edit, $id, $id_user);
+      if (!$reservation) {
+        header('Location:/');
+      }
+    }
+
     $field = Field::getOneById($id);
     //debuguear($field);
     if (!$field) {
@@ -40,7 +55,8 @@ class FieldController
     }
     $router->render('field/field.php', [
       'field' => $field,
-      'id' => $_SESSION['user']['id'] ?? null
+      'id' => $_SESSION['user']['id'] ?? null,
+      'reservation' => $reservation
     ]);
   }
 }

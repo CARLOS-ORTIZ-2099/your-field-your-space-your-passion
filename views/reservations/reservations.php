@@ -4,6 +4,7 @@
   <div class="my-reservations-container">
 
     <?php foreach ($myReservations as $myReservation): ?>
+      <h1><?= $myReservation['id'] ?></h1>
       <article id="<?= $myReservation['id'] ?>">
         <p>
           <span>total a pagar :<strong><?= $myReservation['total_pay'] ?></strong></span>
@@ -36,8 +37,7 @@
           <?php if ($result): ?>
           disabled
           <?php endif; ?>>
-          <!-- CONTINUAR AQUI -->
-          <a href="/field?id=<?= $myReservation['field_id'] ?>">editar reserva</a>
+          <a href="/field?id=<?= $myReservation['field_id'] ?>&edit=<?= $myReservation['id'] ?>">editar reserva</a>
         </button>
 
       </article>

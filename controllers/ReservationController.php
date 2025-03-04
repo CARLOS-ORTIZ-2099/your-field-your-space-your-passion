@@ -7,7 +7,7 @@ use Models\Reservation;
 class ReservationController
 {
 
-
+  // obtiene todas las reservas del usuario con uniones de otras tablas
   public static function myReservations($router)
   {
     session_start();

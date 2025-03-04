@@ -33,16 +33,17 @@ class ApiController
   }
 
 
-  // obtener reservas con una determinada fecha
+  // obtiene todas las horas ocupadas de una reserva en una determinada fecha
   public static function getReservations()
   {
-    // en este metodo comunicarme con el modelo y que traiga todos las reservas
+    // en este metodo comunicarme con el modelo y que traiga todos las reservas 
     // con una fecha en especifico
     // debuguear($_GET);
     $date = $_GET['date'];
     $field = $_GET['field'];
-    $reservations = Reservation::get($date, $field);
-    // debuguear($reservations);
+    $edit = $_GET['edit'] ?? null;
+    $reservations = Reservation::get($date, $field, $edit);
+    //debuguear($reservations);
     $busyHours = [];
     foreach ($reservations as $reservation) {
       $busyHours[$reservation['start_time']] = $reservation['end_time'];
@@ -50,6 +51,20 @@ class ApiController
     // debuguear($busyHours);
     echo json_encode($busyHours);
   }
+
+
+  // funcion para editar reserva
+
+  public static function updateReservation()
+  {
+    // aqui recibir la data que mande el usuario para actualizar su reserva
+    $id = $_GET['id'];
+    $data = $_POST;
+    $data['id'] = $id;
+    $result = Reservation::updateReservation($data);
+    echo json_encode(['result' => $result]);
+  }
+
 
 
   // crear reserva 

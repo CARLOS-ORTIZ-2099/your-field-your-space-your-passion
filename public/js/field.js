@@ -12,6 +12,20 @@ function init() {
   selectDate();
   selectQuantityHours();
   makeReservation();
+  isEditMode();
+}
+
+function isEditMode() {
+  const edit = getUrlParams("edit");
+  if (edit) {
+    const inputDate = document.querySelector(".date");
+    const quantityHours = document.querySelector(".quantity-hours");
+    let pricePerHours = quantityHours.value.split("-");
+    reservation.rental_date = inputDate.value;
+    reservation.total_pay = parseInt(pricePerHours[0] * pricePerHours[1]);
+    reservation.rental_time = pricePerHours[1];
+    callApi(reservation.rental_date);
+  }
 }
 
 function makeReservation() {
@@ -31,8 +45,8 @@ function makeReservation() {
 function validateData() {
   const closing_time = document.getElementById("closing_time").value;
   const { rental_time, start_time } = reservation;
-  console.log(reservation);
-  console.log(busyHours);
+  /*  console.log(reservation);
+  console.log(busyHours); */
   const initTime = parseInt(start_time.slice(0, 3));
   for (let i = initTime; i < initTime + parseInt(rental_time); i++) {
     if (i >= parseInt(closing_time)) {
@@ -57,8 +71,14 @@ function createNewFormData() {
 }
 
 async function saveReservation(formData) {
+  console.log(reservation);
+  // aqui corroborar si estamos en modo edicion o creacion
+  const edit = getUrlParams("edit");
+  const url = edit
+    ? `http://localhost:3000/api/updateReservation?id=${edit}`
+    : `http://localhost:3000/api/saveReservation`;
   try {
-    response = await fetch(`http://localhost:3000/api/saveReservation`, {
+    response = await fetch(url, {
       method: "POST",
       body: formData,
     });
@@ -67,19 +87,26 @@ async function saveReservation(formData) {
     if (!result.result) {
       throw new Error("error inesperado");
     }
-    alert("reserva creada correctamente");
-    location.reload();
+    alert(
+      edit ? "reserva editada correctamente" : "reserva creada correctamente"
+    );
+    if (edit) {
+      location.replace("http://localhost:3000/profile/my-reservations");
+    } else {
+      location.reload();
+    }
   } catch (error) {
     alert("error inesperado intenta luego");
   }
 }
+
 function getUserId() {
   const userId = document.querySelector("#user-id");
   reservation.user_id = userId.value;
 }
 
 function getFieldId() {
-  reservation.field_id = getIdUrlParams();
+  reservation.field_id = getUrlParams("id");
 }
 
 function selectQuantityHours() {
@@ -110,9 +137,14 @@ function selectDate() {
 }
 
 async function callApi(date) {
-  let id = getIdUrlParams();
+  const id = getUrlParams("id");
+  const edit = getUrlParams("edit");
   try {
     let url = `http://localhost:3000/api/getReservations?date=${date}&field=${id}`;
+    if (edit) {
+      url += `&edit=${edit}`;
+    }
+    console.log(url);
     const response = await fetch(url);
     //console.log(response);
     if (!response.ok == 200) throw new Error("error desconocido");
@@ -137,7 +169,7 @@ function renderViewHours(busyHours) {
   let init = 0;
   while (init < hours.length) {
     const result = checkHours(busyHours, hours[init]);
-    console.log(result);
+    //console.log(result);
     if (result) {
       const buttonDisabled = document.createElement("BUTTON");
       buttonDisabled.disabled = true;
@@ -222,11 +254,11 @@ function selectHour({ target }) {
   showReservationButton();
 }
 
-function getIdUrlParams() {
+function getUrlParams(value) {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  const id = urlParams.get("id");
-  return id;
+  const param = urlParams.get(value);
+  return param;
 }
 
 function createTemplateMessage(message) {
@@ -238,6 +270,7 @@ function createTemplateMessage(message) {
 }
 
 function showReservationButton() {
+  console.log(reservation);
   const button = document.querySelector(".button-reservation");
   for (let key in reservation) {
     if (!reservation[key]) {

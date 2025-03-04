@@ -28,6 +28,7 @@ $newRouter->get('/api/getFields', [ApiController::class, 'getFields']);
 $newRouter->get('/api/getFieldsFilters', [ApiController::class, 'getFieldsFilters']);
 $newRouter->get('/api/getReservations', [ApiController::class, 'getReservations']);
 $newRouter->post('/api/saveReservation', [ApiController::class, 'saveReservation']);
+$newRouter->post('/api/updateReservation', [ApiController::class, 'updateReservation']);
 
 // rutas para las reservas
 $newRouter->get('/profile/my-reservations', [ReservationController::class, 'myReservations']);
