@@ -57,11 +57,14 @@ class ApiController
 
   public static function updateReservation()
   {
+    session_start();
+
     // aqui recibir la data que mande el usuario para actualizar su reserva
-    $id = $_GET['id'];
+    $idReservation = $_GET['id'];
     $data = $_POST;
-    $data['id'] = $id;
-    $result = Reservation::updateReservation($data);
+    $data['id'] = $idReservation;
+    $isAdmin = $_SESSION['user']['is_admin'] ?? null;
+    $result = Reservation::updateReservation($data, $isAdmin);
     echo json_encode(['result' => $result]);
   }
 

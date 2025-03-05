@@ -70,22 +70,27 @@ class Reservation
   }
 
   // obtiene una sola reserva segun id
-  public static function getOneReservation($reservationId, $fieldId, $userId)
+  public static function getOneReservation($reservationId, $fieldId, $userId = null)
   {
-    $query = "SELECT * FROM reservations WHERE id = {$reservationId}";
+    $query = "SELECT * FROM reservations WHERE id = {$reservationId} AND field_id = {$fieldId}";
     if ($userId) {
-      $query .= " AND user_id = {$userId} AND field_id = {$fieldId}";
+      $query .= " AND user_id = {$userId}";
     }
     $result =  self::$db->query($query);
     $result = self::transformData($result);
     return array_shift($result);
   }
 
-  public static function updateReservation($data)
+  public static function updateReservation($data, $isAdmin = null)
   {
-    $query = "UPDATE reservations set rental_date = '{$data["rental_date"]}',
-     start_time = '{$data["start_time"]}' WHERE id = '{$data["id"]}' 
-     AND user_id ='{$data["user_id"]}' AND field_id = '{$data["field_id"]}';";
+
+    $query = "UPDATE reservations set rental_date = '{$data["rental_date"]}', 
+    start_time = '{$data["start_time"]}' WHERE id = '{$data["id"]}' AND field_id = '{$data["field_id"]}'";
+
+    if (!$isAdmin) {
+      $query .= " AND user_id ='{$data["user_id"]}'";
+    }
+
     $result = self::$db->query($query);
     return $result;
   }

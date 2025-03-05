@@ -34,7 +34,7 @@
 
 
   <?php
-  $script = "<script src='js/fields.js'></script>";
+  $script = "<script src='/js/fields.js'></script>";
   ?>
 
 </section>

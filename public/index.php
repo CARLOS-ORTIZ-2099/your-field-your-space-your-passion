@@ -34,6 +34,7 @@ $newRouter->post('/api/updateReservation', [ApiController::class, 'updateReserva
 $newRouter->get('/profile/my-reservations', [ReservationController::class, 'myReservations']);
 $newRouter->get('/profile/all-reservations', [ReservationController::class, 'allReservations']);
 $newRouter->post('/profile/delete-reservation', [ReservationController::class, 'deleteReservation']);
+$newRouter->get('/profile/see-fields', [FieldController::class, 'fields']);
 
 
 

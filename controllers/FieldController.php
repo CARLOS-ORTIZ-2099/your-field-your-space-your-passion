@@ -41,12 +41,22 @@ class FieldController
       header('Location:/');
     } elseif ($reservationId && is_numeric($reservationId) && isset($_SESSION['user'])) {
       $userId = $_SESSION['user']['id'];
-      // CONTINUAR AQUI
-      $reservation = Reservation::getOneReservation(
-        $reservationId,
-        $fieldId,
-        $userId
-      );
+      // capturar si el usuario actual es admin
+      $isAdmin = $_SESSION['user']['is_admin'] ?? null;
+      // dependiendo si el usuario es admin o no haremos una u otra query
+      if ($isAdmin) {
+        $reservation = Reservation::getOneReservation(
+          $reservationId,
+          $fieldId
+        );
+      } else {
+        $reservation = Reservation::getOneReservation(
+          $reservationId,
+          $fieldId,
+          $userId
+        );
+      }
+
       if (!$reservation) {
         header('Location:/');
       }
