@@ -1,5 +1,5 @@
 <section>
-
+  <!-- <?php debuguear($profile); ?> -->
   <aside>
     <form class="form" action="">
 
@@ -31,7 +31,13 @@
   <div class="fields-container">
 
   </div>
+  <?php if ($isAdmin === 'profile'): ?>
+    <div>
+      <br><br><br>
+      <a href="/profile/create-field" class="admin-link">crear nuevo campo</a>
+    </div>
 
+  <?php endif; ?>
 
   <?php
   $script = "<script src='/js/fields.js'></script>";

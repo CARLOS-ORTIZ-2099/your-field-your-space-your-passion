@@ -15,6 +15,14 @@ function is_auth()
   }
 }
 
+function is_admin($route)
+{
+  $admin = $_SESSION['user']['is_admin'] ?? null;
+  if (!$admin) {
+    header('Location:/' . $route);
+  }
+}
+
 function authPublic()
 {
   if (isset($_SESSION['user'])) {

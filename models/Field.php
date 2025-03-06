@@ -6,6 +6,22 @@ namespace Models;
 class Field
 {
 
+  protected $name;
+  protected $rental_price;
+  protected $branch_id;
+  protected $type_id;
+  protected $image;
+  protected $opening_hours;
+  protected $closing_time;
+
+  // esta propiedad es estatica ya que al ser estatica no es parte de la instancia
+  // mas bien es parte de la clase, y eso esta bien ya que como sabemos
+  // una propiedad de instancia es aquella que define la entidad, y los 
+  // mensajes no definen a una entidad como tal
+  protected static  $messages = [
+    'errors' => [],
+    'info' => []
+  ];
 
   protected static $db;
 
@@ -14,6 +30,138 @@ class Field
     self::$db = $connect;
   }
 
+  public function __construct($arguments = [])
+  {
+    $this->name = $arguments['name'] ?? null;
+    $this->rental_price = $arguments['rental_price'] ?? null;
+    $this->branch_id = $arguments['branch_id'] ?? null;
+    $this->type_id = $arguments['type_id'] ?? null;
+    $this->image = $arguments['image'] ?? null;
+    $this->opening_hours = $arguments['opening_hours'] ?? null;
+    $this->closing_time = $arguments['closing_time'] ?? null;
+  }
+
+
+  public function validateFields()
+  {
+    if (!$this->name) {
+      self::$messages['errors']['name'] = 'el nombre es obligatorio';
+    }
+    if (!$this->rental_price) {
+      self::$messages['errors']['rental_price'] = 'el priecio de alquiler es obligatorio';
+    }
+    if (!$this->branch_id) {
+      self::$messages['errors']['branch_id'] = 'el id de sucursal es obligatorio';
+    }
+    if (!$this->type_id) {
+      self::$messages['errors']['type_id'] = 'el id de tipo es obligatorio';
+    }
+    /*  if (!$this->image) {
+      self::$messages['errors']['image'] = 'la imagen es obligatoria';
+    } */
+
+
+    if (!$this->opening_hours) {
+      self::$messages['errors']['opening_hours'] = 'la hora de apertura es obligatoria';
+    }
+    if (!$this->closing_time) {
+      self::$messages['errors']['closing_time'] = 'la hora de cierre es obligatoria';
+    }
+    return self::$messages;
+  }
+
+  public function getValues()
+  {
+
+    return get_object_vars($this);
+  }
+
+
+  public static function getMessages()
+  {
+
+    return self::$messages;
+  }
+
+
+  public function existImage()
+  {
+    if ($_FILES['image']['error'] === 4) {
+      self::$messages['errors']['image'] = 'la imagen es obligatoria';
+    }
+  }
+
+  public function validateImage()
+  {
+    // validar tipo y peso
+    //debuguear($_FILES['image']);
+    $validTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
+    $sizeMax = 1024 * 1024 * 3;
+
+    $isValid = true;
+
+    if (!in_array($_FILES['image']['type'], $validTypes)) {
+      self::$messages['errors']['image'] = "la imagen no tiene el formato correcto";
+      $isValid = false;
+    } elseif ($_FILES['image']['size'] > $sizeMax) {
+      self::$messages['errors']['image'] = "El archivo es demasiado grande. Máximo permitido: 3 MB.";
+      $isValid = false;
+    }
+    return $isValid;
+  }
+
+  public function saveImage()
+  {
+    // crear nombre unico para la imagen
+    $path = $_FILES['image']['full_path'];
+    $uniqueId = uniqid();
+    $full_path = $uniqueId . "-" . $path;
+    $routeDir = __DIR__ . "/../uploads";
+    if (!file_exists($routeDir)) {
+      mkdir($routeDir);
+    }
+    $res = move_uploaded_file($_FILES['image']['tmp_name'], $routeDir . "/" . $full_path);
+
+    return ['response' => $res, 'image' => $full_path];
+  }
+
+  public function save()
+  {
+    $query = "INSERT INTO fields 
+    (name, rental_price, branch_id, type_id, image, opening_hours, closing_time)
+    VALUES('{$this->name}', {$this->rental_price}, {$this->branch_id},{$this->type_id} ,
+    '{$this->image}', '{$this->opening_hours}', '{$this->closing_time}')";
+    $result = self::$db->query($query);
+    if ($result) {
+      $this->resetear();
+      self::$messages['info']['success'] = 'campo creado con exito';
+    }
+  }
+
+  public function resetear()
+  {
+    foreach (get_object_vars($this) as $key => $value) {
+      $this->$key = null;
+    }
+  }
+
+  // getters
+  public function getProperty($property)
+  {
+    $res = $this->$property;
+    return $res;
+  }
+  // setters
+  public function setProperty($property, $value)
+  {
+    $this->$property = $value;
+  }
+
+  public static function setMessage($type, $data)
+  {
+    self::$messages[$type] = $data;
+    //debuguear(self::$messages);
+  }
 
   public static function get($skip, $type = null, $district = null)
   {
@@ -77,8 +225,6 @@ class Field
     $result = self::transformData($result);
     return array_shift($result);
   }
-
-
 
   public static function transformData($data)
   {

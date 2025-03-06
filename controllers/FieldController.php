@@ -13,26 +13,34 @@ class FieldController
   public static function fields($router)
   {
     session_start();
+
+    $urlCurrent = $_SERVER['PATH_INFO'] ?? 'sin data';
+    $user = $_SESSION['user'] ?? null;
+    $isAdmin = $_SESSION['user']['is_admin'] ?? null;
+
+    if ($urlCurrent === '/profile/see-fields' && $user && $isAdmin) {
+      $isAdmin = 'profile';
+    } elseif ($urlCurrent === '/profile/see-fields' && (!$user || !$isAdmin)) {
+      header('Location:/');
+    }
+
+
     $types = Type::get();
     $districts = District::get();
     $router->render('fields/fields.php', [
       'types' => $types,
-      'districts' => $districts
+      'districts' => $districts,
+      'isAdmin' => $isAdmin
     ]);
   }
-
-
 
   public static function field($router)
   {
     session_start();
-    //$id = $_GET['id'] ?? null;
     $fieldId = $_GET['id'] ?? null;
-    //$edit = $_GET['edit'] ?? null;
     $reservationId = $_GET['edit'] ?? null;
     if (!$fieldId || !is_numeric($fieldId)) {
       header('Location:/');
-      // debuguear('no valido');
     }
     $reservation = null;
     if ($reservationId && !is_numeric($reservationId)) {
@@ -41,9 +49,7 @@ class FieldController
       header('Location:/');
     } elseif ($reservationId && is_numeric($reservationId) && isset($_SESSION['user'])) {
       $userId = $_SESSION['user']['id'];
-      // capturar si el usuario actual es admin
       $isAdmin = $_SESSION['user']['is_admin'] ?? null;
-      // dependiendo si el usuario es admin o no haremos una u otra query
       if ($isAdmin) {
         $reservation = Reservation::getOneReservation(
           $reservationId,
@@ -63,7 +69,6 @@ class FieldController
     }
 
     $field = Field::getOneById($fieldId);
-    //debuguear($field);
     if (!$field) {
       header('Location:/');
     }
@@ -71,6 +76,55 @@ class FieldController
       'field' => $field,
       'id' => $_SESSION['user']['id'] ?? null,
       'reservation' => $reservation
+    ]);
+  }
+
+  public static function createField($router)
+  {
+    session_start();
+    is_auth();
+    is_admin('profile');
+    $types = Type::get();
+    $districts = District::get();
+    $field = new Field;
+    $messages = [];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $field = new Field($_POST);
+      // validar si llega la imagen y si es valida
+      $field->existImage();
+      $messages = $field->validateFields();
+      if (empty($messages['errors'])) {
+        // si todos los campos estan llenos validar la imagen el tipo y el peso de la misma
+        $isValid = $field->validateImage();
+        if ($isValid) {
+          // guardamos la imagen si es valida
+          $res = $field->saveImage();
+          // si la imagen se guardo correctamente
+          if ($res['response']) {
+            // setear la propiedad image de la instancia con la url final
+            $field->setProperty('image', $res['image']);
+            // guardar la publicacion
+            $field->save();
+          }
+          // si no se guardo la imagen
+          else {
+            Field::setMessage(
+              'errors',
+              ['badrequest' => 'hubo un error al guardar imagen']
+            );
+          }
+        }
+      }
+    }
+    $messages = Field::getMessages();
+    $field = $field->getValues();
+
+    $router->render('field/form-field.php', [
+      'types' => $types,
+      'districts' => $districts,
+      'field' => $field,
+      'errors' => $messages['errors'],
+      'info' => $messages['info'],
     ]);
   }
 }
