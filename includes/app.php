@@ -1,5 +1,6 @@
 <?php
 
+use Models\Branch;
 use Models\District;
 use Models\Field;
 use Models\Reservation;
@@ -20,3 +21,4 @@ User::setDb($db);
 Reservation::setDb($db);
 Type::setDb($db);
 District::setDb($db);
+Branch::setDb($db);

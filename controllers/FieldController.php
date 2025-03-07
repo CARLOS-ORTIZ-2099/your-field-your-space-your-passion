@@ -2,6 +2,7 @@
 
 namespace  Controllers;
 
+use Models\Branch;
 use Models\District;
 use Models\Field;
 use Models\Reservation;
@@ -87,11 +88,15 @@ class FieldController
     is_auth();
     is_admin('profile');
     $types = Type::get();
-    $districts = District::get();
+    // aqui deberiamos sacar las sucursales no los distritos
+    // ya que las sucursales ya traen consigo los distritos
+    //$districts = District::get();
+    $branches = Branch::get();
     $field = new Field;
     $messages = [];
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $field = new Field($_POST);
+      //debuguear($field);
       // validar si llega la imagen y si es valida
       $field->existImage();
       $messages = $field->validateFields();
@@ -123,7 +128,7 @@ class FieldController
 
     $router->render('field/form-field.php', [
       'types' => $types,
-      'districts' => $districts,
+      'branches' => $branches,
       'field' => $field,
       'errors' => $messages['errors'],
       'info' => $messages['info'],
@@ -137,7 +142,8 @@ class FieldController
     is_auth();
     is_admin('profile');
     $types = Type::get();
-    $districts = District::get();
+    //$districts = District::get();
+    $branches = Branch::get();
     $field = new Field;
     $messages = [];
 
@@ -192,7 +198,7 @@ class FieldController
 
     $router->render('field/form-field.php', [
       'types' => $types,
-      'districts' => $districts,
+      'branches' => $branches,
       'field' => $field,
       'errors' => $messages['errors'],
       'info' => $messages['info']

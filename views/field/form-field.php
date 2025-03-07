@@ -24,13 +24,13 @@
   <label for="branch_id">elige la sucursal - ID de Sucursal</label>
   <select name="branch_id" id="branch_id">
     <option value="">---</option>
-    <?php foreach ($districts as $district): ?>
+    <?php foreach ($branches as $branch): ?>
       <option
-        <?php if ($field['branch_id'] === $district['id']): ?>
+        <?php if ($field['branch_id'] === $branch['id']): ?>
         selected
         <?php endif; ?>
-        value="<?= $district['id'] ?>">
-        <?= $district['name'] ?>
+        value="<?= $branch['id'] ?>">
+        <?= $branch['name'] ?>
       </option>
     <?php endforeach; ?>
   </select>
