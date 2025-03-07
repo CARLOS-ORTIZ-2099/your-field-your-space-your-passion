@@ -138,6 +138,27 @@ class Field
     }
   }
 
+
+
+  public function edit($id)
+  {
+    $query = "UPDATE fields SET name ='{$this->name}', rental_price={$this->rental_price}, branch_id={$this->branch_id}, 
+    type_id={$this->type_id}, image='{$this->image}', opening_hours='{$this->opening_hours}',closing_time='{$this->closing_time}'
+     WHERE id = {$id};";
+    $result = self::$db->query($query);
+    if ($result) {
+      $this->resetear();
+      self::$messages['info']['success'] = 'campo editado con exito';
+    }
+  }
+
+  public static function delete($id)
+  {
+    $query = "DELETE FROM fields WHERE id = $id;";
+    $result = self::$db->query($query);
+    return $result;
+  }
+
   public function resetear()
   {
     foreach (get_object_vars($this) as $key => $value) {
@@ -221,6 +242,14 @@ class Field
     INNER JOIN types
     ON fields.type_id = types.id';
     $query .= ' WHERE fields.id = ' . $id;
+    $result =  self::$db->query($query);
+    $result = self::transformData($result);
+    return array_shift($result);
+  }
+
+  public static function getOne($id)
+  {
+    $query = "SELECT * FROM fields WHERE id = $id;";
     $result =  self::$db->query($query);
     $result = self::transformData($result);
     return array_shift($result);

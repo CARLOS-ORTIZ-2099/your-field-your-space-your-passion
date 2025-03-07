@@ -38,6 +38,21 @@ function checkUserPath()
   return $urlNew;
 }
 
+
+function deleteImage($name)
+{
+  if ($name) {
+    $route = __DIR__ . "/../uploads/" . $name;
+    // echo $route;
+    if (file_exists($route)) {
+      $result = unlink($route);
+      //echo $result;
+    }
+  } else {
+    echo 'no tiene nada';
+  }
+}
+
 function campareDate($myReservation)
 {
   $now = strtotime(date('Y-m-d'));

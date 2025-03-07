@@ -1,6 +1,8 @@
 <!-- <?= debuguear($field); ?> -->
 <!-- <?php debuguear($_SESSION); ?> -->
 <!-- <?php debuguear($reservation); ?> -->
+<!-- <?php debuguear($reservationId); ?> -->
+
 <section>
   <h1><?= $field['name'] ?></h1>
   <div>
@@ -77,6 +79,15 @@
 
       <button class="hidden button-reservation">generar reserva</button>
 
+      <!-- <?php debuguear($isAdmin) ?> -->
+      <?php if ($isAdmin && !$reservationId): ?>
+        <form action="/profile/delete-field" method="POST">
+          <input type="hidden" name="id" value="<?= $field['id'] ?>">
+          <input type="submit" value="eliminar campo deportivo">
+        </form>
+        <br>
+        <a href="/profile/edit-field?id=<?= $field['id'] ?>">editar campo deportivo</a>
+      <?php endif; ?>
     </div>
     <?php
     $script = "<script src='js/field.js'></script>";

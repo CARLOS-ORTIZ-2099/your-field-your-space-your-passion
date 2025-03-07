@@ -40,6 +40,9 @@ $newRouter->get('/profile/see-fields', [FieldController::class, 'fields']);
 // rutas para los campos
 $newRouter->get('/profile/create-field', [FieldController::class, 'createField']);
 $newRouter->post('/profile/create-field', [FieldController::class, 'createField']);
+$newRouter->get('/profile/edit-field', [FieldController::class, 'editField']);
+$newRouter->post('/profile/edit-field', [FieldController::class, 'editField']);
+$newRouter->post('/profile/delete-field', [FieldController::class, 'deleteField']);
 
 
 

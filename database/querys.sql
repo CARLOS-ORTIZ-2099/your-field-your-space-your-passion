@@ -146,6 +146,16 @@ WHERE types.id = 1 AND districts.id = 4;
 -- consultando todos los registros
 SELECT * FROM fields;
 
+-- consultando un field en especifico
+SELECT * FROM field WHERE id = 1;
+
+-- eliminando un field segun id
+
+DELETE FROM fields WHERE id = 1;
+
+-- editando un field en especifico
+UPDATE fields SET name ='', rental_price='', branch_id='', type_id='', image='', opening_hours='',closing_time='' WHERE id = 1;
+
 
 CREATE TABLE reservations (
   id INTEGER AUTO_INCREMENT PRIMARY KEY,

@@ -37,8 +37,6 @@ async function callApi(skip = 0) {
 }
 
 function renderViewFields(data) {
-  const adminLink = document.querySelector(".admin-link");
-  console.log(adminLink);
   data.forEach((element) => {
     const div = document.createElement("DIV");
     div.innerHTML = `<h3>${element.name}</h3>
@@ -48,15 +46,6 @@ function renderViewFields(data) {
         <span> cierre: <strong>${element.closing_time}</strong></span>
       </div>
       <a href="/field?id=${element.id}">ver sucursal</a>`;
-    if (adminLink) {
-      const linkEditar = document.createElement("A");
-      linkEditar.innerText = "editar";
-      linkEditar.setAttribute("href", "/route-edit");
-      const linkEliminar = document.createElement("A");
-      linkEliminar.innerText = "eliminar";
-      linkEliminar.setAttribute("href", "/route-delete");
-      div.append(linkEditar, linkEliminar);
-    }
     fieldsContainer.appendChild(div);
   });
 

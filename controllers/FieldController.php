@@ -43,13 +43,13 @@ class FieldController
       header('Location:/');
     }
     $reservation = null;
+    $isAdmin = $_SESSION['user']['is_admin'] ?? null;
     if ($reservationId && !is_numeric($reservationId)) {
       header('Location:/');
     } elseif ($reservationId && is_numeric($reservationId) && !isset($_SESSION['user'])) {
       header('Location:/');
     } elseif ($reservationId && is_numeric($reservationId) && isset($_SESSION['user'])) {
       $userId = $_SESSION['user']['id'];
-      $isAdmin = $_SESSION['user']['is_admin'] ?? null;
       if ($isAdmin) {
         $reservation = Reservation::getOneReservation(
           $reservationId,
@@ -75,7 +75,9 @@ class FieldController
     $router->render('field/field.php', [
       'field' => $field,
       'id' => $_SESSION['user']['id'] ?? null,
-      'reservation' => $reservation
+      'reservation' => $reservation,
+      'isAdmin' => $isAdmin,
+      'reservationId' => $reservationId
     ]);
   }
 
@@ -126,5 +128,86 @@ class FieldController
       'errors' => $messages['errors'],
       'info' => $messages['info'],
     ]);
+  }
+
+
+  public static function editField($router)
+  {
+    session_start();
+    is_auth();
+    is_admin('profile');
+    $types = Type::get();
+    $districts = District::get();
+    $field = new Field;
+    $messages = [];
+
+    $idField = $_GET['id'] ?? null;
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+      if ($idField && is_numeric($idField)) {
+        // buscar en la db
+        $field = Field::getOne($idField);
+        //debuguear($field);
+        $previousImage = $field['image'];
+        // borrar la imagen del sistema local
+        deleteImage($previousImage);
+        // si no existe redireccionar
+        if (!$field) {
+          header('Location: /profile/see-fields');
+        }
+      } else {
+        header('Location: /profile/see-fields');
+      }
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+      $field = new Field($_POST);
+      $field->existImage();
+      $messages = $field->validateFields();
+      if (empty($messages['errors'])) {
+        // si todos los campos estan llenos validar la imagen el tipo y el peso de la misma
+        $isValid = $field->validateImage();
+        if ($isValid) {
+          // guardamos la imagen si es valida
+          $res = $field->saveImage();
+          // si la imagen se guardo correctamente
+          if ($res['response']) {
+            // setear la propiedad image de la instancia con la url final
+            $field->setProperty('image', $res['image']);
+            // editar la publicacion
+            //debuguear($field);
+            $field->edit($idField);
+          }
+          // si no se guardo la imagen
+          else {
+            Field::setMessage(
+              'errors',
+              ['badrequest' => 'hubo un error al guardar imagen']
+            );
+          }
+        }
+      }
+      $field = $field->getValues();
+    }
+    $messages = Field::getMessages();
+
+
+    $router->render('field/form-field.php', [
+      'types' => $types,
+      'districts' => $districts,
+      'field' => $field,
+      'errors' => $messages['errors'],
+      'info' => $messages['info']
+    ]);
+  }
+
+  public static function deleteField($router)
+  {
+    session_start();
+    is_auth();
+    is_admin('profile');
+    $previousRoute = '/profile/see-fields';
+    $result = Field::delete($_POST['id']);
+    if ($result) {
+      header('Location:' . $previousRoute);
+    }
   }
 }
