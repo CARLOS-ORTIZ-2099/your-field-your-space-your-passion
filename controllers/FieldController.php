@@ -110,6 +110,10 @@ class FieldController
           if ($res['response']) {
             // setear la propiedad image de la instancia con la url final
             $field->setProperty('image', $res['image']);
+            // setear las horas corregidas
+            $correctedHours = correctHours($_POST['opening_hours'], $_POST['closing_time']);
+            $field->setProperty('opening_hours', $correctedHours['opening_hours']);
+            $field->setProperty('closing_time', $correctedHours['closing_time']);
             // guardar la publicacion
             $field->save();
           }
@@ -178,6 +182,10 @@ class FieldController
           if ($res['response']) {
             // setear la propiedad image de la instancia con la url final
             $field->setProperty('image', $res['image']);
+            // setear las horas corregidas
+            $correctedHours = correctHours($_POST['opening_hours'], $_POST['closing_time']);
+            $field->setProperty('opening_hours', $correctedHours['opening_hours']);
+            $field->setProperty('closing_time', $correctedHours['closing_time']);
             // editar la publicacion
             //debuguear($field);
             $field->edit($idField);
@@ -211,8 +219,12 @@ class FieldController
     is_auth();
     is_admin('profile');
     $previousRoute = '/profile/see-fields';
+    $field = Field::getOne($_POST['id']);
+
     $result = Field::delete($_POST['id']);
     if ($result) {
+      // si se elimino correctamente , elimnar la imagen asociada a ese campo
+      deleteImage($field['image']);
       header('Location:' . $previousRoute);
     }
   }

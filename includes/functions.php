@@ -64,3 +64,16 @@ function campareDate($myReservation)
   }
   return false;
 }
+
+function correctHours($opening_hours, $closing_time)
+{
+  $init = explode(':', $opening_hours);
+  $final = explode(':', $closing_time);
+  /* debuguear($init);
+  debuguear($final); */
+  $init = array_shift($init) . ":00";
+
+  $final = array_shift($final) . ":00";
+
+  return ['opening_hours' => $init, 'closing_time' => $final];
+}
