@@ -2,7 +2,7 @@
 
 namespace Models;
 
-class User
+class User extends ActiveRecord
 {
 
   protected  $name;
@@ -12,23 +12,12 @@ class User
   protected  $is_admin;
   protected  $token;
   protected  $confirm;
+
+  protected static $table = 'users';
   // esto no define a un usuario entonces no deberia ser parte de una instancia
   // mas bien deberia ser parte de la clase ya que es una propiedad general
-  protected static  $messages = [
-    'errors' => [],
-    'info' => []
-  ];
-  // podriamos hacer que esta propiedad en esta clase sea de instancia
-  // los potenciales problemas si convertimos esta propiedad en una de instancia seria que
-  // si en un futuro agrego metodos estaticos que necesiten acceder a la 
-  // varaibel de $db no podria, ya que estos metodos estaticos no tienen this
-  protected static $db;
-  // ya se vio
-  public static function setDb($connect)
-  {
-    self::$db = $connect;
-  }
-  // ya se vio
+
+
   public function __construct($arguments = [])
   {
     $this->name = $arguments['name'] ?? null;
@@ -37,7 +26,7 @@ class User
     $this->password = $arguments['password'] ?? null;
   }
 
-  // ya se vio
+
   public function validateFieldsRegister()
   {
     if (!$this->name) {
@@ -59,7 +48,7 @@ class User
     return self::$messages;
   }
 
-  // ya se vio
+
   public  function validateFieldsLogin()
   {
     if (!$this->email) {
@@ -71,27 +60,20 @@ class User
     return self::$messages;
   }
 
-  // ya se vio
-  public static function getOne($key, $value)
+  public function passwordVerify($password)
   {
-    $query = "SELECT * FROM users WHERE {$key} = '{$value}'";
-    $result = self::$db->query($query);
-    $result = self::transformData($result);
-    //debuguear($result);
-    return array_shift($result);
-  }
-
-  // ya se vio
-  public static function transformData($data)
-  {
-    $registers = [];
-    while ($row = $data->fetch_assoc()) {
-      $registers[] = $row;
+    $result =  password_verify($this->password, $password);
+    if ($result) {
+      return true;
     }
-    return $registers;
+    self::$messages['errors']['badrequest'] = 'el password es incorrecto';
   }
 
-  // ya se vio
+  public function passwordHash()
+  {
+    $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+  }
+
   public function save()
   {
     $query = "INSERT INTO users (name, last_name, email, password)
@@ -105,58 +87,5 @@ class User
       //$this->errors['success'] = 'registrado con exito';
       self::$messages['info']['success'] = 'registrado con exito';
     }
-  }
-
-  // ya se vio
-  public function resetear()
-  {
-    foreach (get_object_vars($this) as $key => $value) {
-      $this->$key = null;
-    }
-  }
-
-  // ya se vio
-  public function passwordHash()
-  {
-    $this->password = password_hash($this->password, PASSWORD_BCRYPT);
-  }
-
-  // ya se vio
-  public function passwordVerify($password)
-  {
-    $result =  password_verify($this->password, $password);
-    if ($result) {
-      return true;
-    }
-    self::$messages['errors']['badrequest'] = 'el password es incorrecto';
-  }
-
-
-  // ya se vio
-  public static function setMessage($type, $data)
-  {
-    self::$messages[$type] = $data;
-    //debuguear(self::$messages);
-  }
-
-  // ya se vio
-  public static function getMessages()
-  {
-
-    return self::$messages;
-  }
-
-  // ya se vio
-  public function getProperty($property)
-  {
-    $res = $this->$property;
-    return $res;
-  }
-
-  // ya se vio
-  public function getValues()
-  {
-
-    return get_object_vars($this);
   }
 }

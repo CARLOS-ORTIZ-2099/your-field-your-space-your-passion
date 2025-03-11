@@ -2,7 +2,7 @@
 
 namespace Models;
 
-class Reservation
+class Reservation extends ActiveRecord
 {
 
   protected $user_id;
@@ -11,13 +11,6 @@ class Reservation
   protected $rental_time;
   protected $start_time;
   protected $rental_date;
-
-  protected static $db;
-
-  public static function setDb($connect)
-  {
-    self::$db = $connect;
-  }
 
   public function __construct($arguments = [])
   {
@@ -105,17 +98,8 @@ class Reservation
 
   public static function delete($id)
   {
-    $query = "DELETE FROM reservations WHERE reservations.id = {$id}";
+    $query = "DELETE FROM reservations WHERE id = {$id}";
     $result = self::$db->query($query);
     return $result;
-  }
-
-  public static function transformData($data)
-  {
-    $registers = [];
-    while ($row = $data->fetch_assoc()) {
-      $registers[] = $row;
-    }
-    return $registers;
   }
 }

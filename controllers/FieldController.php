@@ -26,8 +26,8 @@ class FieldController
     }
 
 
-    $types = Type::get();
-    $districts = District::get();
+    $types = Type::find();
+    $districts = District::find();
     $router->render('fields/fields.php', [
       'types' => $types,
       'districts' => $districts,
@@ -87,11 +87,11 @@ class FieldController
     session_start();
     is_auth();
     is_admin('profile');
-    $types = Type::get();
+    $types = Type::find();
     // aqui deberiamos sacar las sucursales no los distritos
     // ya que las sucursales ya traen consigo los distritos
     //$districts = District::get();
-    $branches = Branch::get();
+    $branches = Branch::find();
     $field = new Field;
     $messages = [];
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -145,9 +145,9 @@ class FieldController
     session_start();
     is_auth();
     is_admin('profile');
-    $types = Type::get();
+    $types = Type::find();
     //$districts = District::get();
-    $branches = Branch::get();
+    $branches = Branch::find();
     $field = new Field;
     $messages = [];
 
@@ -155,8 +155,7 @@ class FieldController
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       if ($idField && is_numeric($idField)) {
         // buscar en la db
-        $field = Field::getOne($idField);
-        //debuguear($field);
+        $field = Field::findOne('id', $idField);
         $previousImage = $field['image'];
         // borrar la imagen del sistema local
         deleteImage($previousImage);
@@ -219,8 +218,7 @@ class FieldController
     is_auth();
     is_admin('profile');
     $previousRoute = '/profile/see-fields';
-    $field = Field::getOne($_POST['id']);
-
+    $field = Field::findOne('id', $_POST['id']);
     $result = Field::delete($_POST['id']);
     if ($result) {
       // si se elimino correctamente , elimnar la imagen asociada a ese campo

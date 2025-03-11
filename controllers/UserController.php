@@ -23,7 +23,7 @@ class UserController
       if (empty($messages['errors'])) {
         $property = $newUser->getProperty('email');
         //$user =  $newUser->getOne();
-        $user = User::getOne('email', $property);
+        $user = User::findOne('email', $property);
         if (!$user) {
           User::setMessage(
             'errors',
@@ -68,7 +68,7 @@ class UserController
       //debuguear($messages);
       if (empty($messages['errors'])) {
         $property = $newUser->getProperty('email');
-        $user = User::getOne('email', $property);
+        $user = User::findOne('email', $property);
         if ($user) {
           User::setMessage(
             'errors',

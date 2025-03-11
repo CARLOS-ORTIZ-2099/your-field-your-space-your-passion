@@ -3,7 +3,7 @@
 namespace Models;
 
 
-class Field
+class Field extends ActiveRecord
 {
 
   protected $name;
@@ -14,21 +14,8 @@ class Field
   protected $opening_hours;
   protected $closing_time;
 
-  // esta propiedad es estatica ya que al ser estatica no es parte de la instancia
-  // mas bien es parte de la clase, y eso esta bien ya que como sabemos
-  // una propiedad de instancia es aquella que define la entidad, y los 
-  // mensajes no definen a una entidad como tal
-  protected static  $messages = [
-    'errors' => [],
-    'info' => []
-  ];
+  protected static $table = 'fields';
 
-  protected static $db;
-
-  public static function setDb($connect)
-  {
-    self::$db = $connect;
-  }
 
   public function __construct($arguments = [])
   {
@@ -56,10 +43,6 @@ class Field
     if (!$this->type_id) {
       self::$messages['errors']['type_id'] = 'el id de tipo es obligatorio';
     }
-    /*  if (!$this->image) {
-      self::$messages['errors']['image'] = 'la imagen es obligatoria';
-    } */
-
 
     if (!$this->opening_hours) {
       self::$messages['errors']['opening_hours'] = 'la hora de apertura es obligatoria';
@@ -69,20 +52,6 @@ class Field
     }
     return self::$messages;
   }
-
-  public function getValues()
-  {
-
-    return get_object_vars($this);
-  }
-
-
-  public static function getMessages()
-  {
-
-    return self::$messages;
-  }
-
 
   public function existImage()
   {
@@ -125,6 +94,7 @@ class Field
     return ['response' => $res, 'image' => $full_path];
   }
 
+
   public function save()
   {
     $query = "INSERT INTO fields 
@@ -137,8 +107,6 @@ class Field
       self::$messages['info']['success'] = 'campo creado con exito';
     }
   }
-
-
 
   public function edit($id)
   {
@@ -157,31 +125,6 @@ class Field
     $query = "DELETE FROM fields WHERE id = $id;";
     $result = self::$db->query($query);
     return $result;
-  }
-
-  public function resetear()
-  {
-    foreach (get_object_vars($this) as $key => $value) {
-      $this->$key = null;
-    }
-  }
-
-  // getters
-  public function getProperty($property)
-  {
-    $res = $this->$property;
-    return $res;
-  }
-  // setters
-  public function setProperty($property, $value)
-  {
-    $this->$property = $value;
-  }
-
-  public static function setMessage($type, $data)
-  {
-    self::$messages[$type] = $data;
-    //debuguear(self::$messages);
   }
 
   public static function get($skip, $type = null, $district = null)
@@ -228,7 +171,6 @@ class Field
     return $result;
   }
 
-
   public static function getOneById($id)
   {
 
@@ -245,22 +187,5 @@ class Field
     $result =  self::$db->query($query);
     $result = self::transformData($result);
     return array_shift($result);
-  }
-
-  public static function getOne($id)
-  {
-    $query = "SELECT * FROM fields WHERE id = $id;";
-    $result =  self::$db->query($query);
-    $result = self::transformData($result);
-    return array_shift($result);
-  }
-
-  public static function transformData($data)
-  {
-    $registers = [];
-    while ($row = $data->fetch_assoc()) {
-      $registers[] = $row;
-    }
-    return $registers;
   }
 }

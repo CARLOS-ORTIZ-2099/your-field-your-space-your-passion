@@ -77,3 +77,14 @@ function correctHours($opening_hours, $closing_time)
 
   return ['opening_hours' => $init, 'closing_time' => $final];
 }
+
+function checkShift($hour)
+{
+  $explode = explode(':', $hour);
+  $res = (int) array_shift($explode);
+  if ($res >= 12) {
+    return 'pm';
+  } else {
+    return 'am';
+  }
+}
