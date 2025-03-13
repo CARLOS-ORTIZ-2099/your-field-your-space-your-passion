@@ -97,11 +97,25 @@ class Field extends ActiveRecord
 
   public function save()
   {
+    $types = "sdiisss";
     $query = "INSERT INTO fields 
     (name, rental_price, branch_id, type_id, image, opening_hours, closing_time)
-    VALUES('{$this->name}', {$this->rental_price}, {$this->branch_id},{$this->type_id} ,
-    '{$this->image}', '{$this->opening_hours}', '{$this->closing_time}')";
-    $result = self::$db->query($query);
+    VALUES(?, ?, ?, ? , ?, ?, ?)";
+
+    $stmt = self::$db->prepare($query);
+    $stmt->bind_param(
+      $types,
+      $this->name,
+      $this->rental_price,
+      $this->branch_id,
+      $this->type_id,
+      $this->image,
+      $this->opening_hours,
+      $this->closing_time
+    );
+
+    $result = $stmt->execute();
+    $stmt->close();
     if ($result) {
       $this->resetear();
       self::$messages['info']['success'] = 'campo creado con exito';
@@ -110,10 +124,25 @@ class Field extends ActiveRecord
 
   public function edit($id)
   {
-    $query = "UPDATE fields SET name ='{$this->name}', rental_price={$this->rental_price}, branch_id={$this->branch_id}, 
-    type_id={$this->type_id}, image='{$this->image}', opening_hours='{$this->opening_hours}',closing_time='{$this->closing_time}'
-     WHERE id = {$id};";
-    $result = self::$db->query($query);
+    $types = "sdiisssi";
+    $query = "UPDATE fields SET 
+    name = ?, rental_price = ?, branch_id = ?, type_id = ?, image = ?, opening_hours = ?, closing_time = ?
+    WHERE id = ?";
+
+    $stmt = self::$db->prepare($query);
+    $stmt->bind_param(
+      $types,
+      $this->name,
+      $this->rental_price,
+      $this->branch_id,
+      $this->type_id,
+      $this->image,
+      $this->opening_hours,
+      $this->closing_time,
+      $id
+    );
+    $result = $stmt->execute();
+    $stmt->close();
     if ($result) {
       $this->resetear();
       self::$messages['info']['success'] = 'campo editado con exito';
@@ -122,13 +151,19 @@ class Field extends ActiveRecord
 
   public static function delete($id)
   {
-    $query = "DELETE FROM fields WHERE id = $id;";
-    $result = self::$db->query($query);
+    $query = "DELETE FROM fields WHERE id = ?;";
+    $stmt = self::$db->prepare($query);
+    $stmt->bind_param('i', $id);
+    $result = $stmt->execute();
+    $stmt->close();
     return $result;
   }
 
+
   public static function get($skip, $type = null, $district = null)
   {
+    $types = '';
+    $values = [];
     // aqui buscar las lozas deportivas por ditrito y por tipo
     // para no hacer uniones innecesarias comprobar si solo se filtra por distrito o por tipo
     $query = "SELECT fields.* FROM fields";
@@ -142,14 +177,19 @@ class Field extends ActiveRecord
       ON fields.branch_id = branches.id
       INNER JOIN districts
       ON branches.district_id = districts.id";
-      $query .= " WHERE types.id = $type AND districts.id = $district";
+      $query .= " WHERE types.id = ? AND districts.id = ?";
+      $types .= 'ii';
+      $values[] = $type;
+      $values[] = $district;
     }
     //si solo existe type
     else if ($type) {
       $query .= "
       INNER JOIN  types
       ON fields.type_id = types.id";
-      $query .= " WHERE types.id = $type";
+      $query .= " WHERE types.id = ?";
+      $types .= 'i';
+      $values[] = $type;
     }
     // si solo existe district
     else if ($district) {
@@ -158,16 +198,23 @@ class Field extends ActiveRecord
       ON fields.branch_id = branches.id
       INNER JOIN districts
       ON branches.district_id = districts.id";
-      $query .= " WHERE districts.id = $district";
+      $query .= " WHERE districts.id = ?";
+      $types .= 'i';
+      $values[] = $district;
     }
 
+    // $skip siempre va a existir
     if (is_numeric($skip)) {
-      $query .= " LIMIT 3 OFFSET {$skip}";
+      $query .= " LIMIT 3 OFFSET ?";
+      $types .= 'i';
+      $values[] = $skip;
     }
-    // debuguear($query);
-    $result =  self::$db->query($query);
+    $stmt = self::$db->prepare($query);
+    $stmt->bind_param($types, ...$values);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
     $result = self::transformData($result);
-    //debuguear($result);
     return $result;
   }
 
@@ -183,8 +230,13 @@ class Field extends ActiveRecord
     ON branches.district_id = districts.id
     INNER JOIN types
     ON fields.type_id = types.id';
-    $query .= ' WHERE fields.id = ' . $id;
-    $result =  self::$db->query($query);
+    $query .= ' WHERE fields.id = ?';
+
+    $stmt = self::$db->prepare($query);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
     $result = self::transformData($result);
     return array_shift($result);
   }

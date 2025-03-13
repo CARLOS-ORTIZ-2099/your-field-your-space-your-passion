@@ -17,7 +17,7 @@
     <p>- distrito : <strong><?= $field['distrito'] ?></strong></p>
     <p>- tipo de loza : <strong><?= $field['tipo_cancha'] ?></strong></p>
     <p>- abrimos : <strong><?= $field['opening_hours'] ?> <?= checkShift($field['opening_hours']) ?></strong></p>
-    <p>- cerramos : <strong><?= $field['closing_time'] ?> <?= checkShift($field['opening_hours']) ?></strong></p>
+    <p>- cerramos : <strong><?= $field['closing_time'] ?> <?= checkShift($field['closing_time']) ?></strong></p>
   </div>
 
 

@@ -38,6 +38,9 @@ class User extends ActiveRecord
     if (!$this->email) {
       self::$messages['errors']['email'] = 'el email es obligatorio';
     }
+    if ($this->email && !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+      self::$messages['errors']['email'] = 'escribe un email correcto';
+    }
     if (!$this->password) {
       self::$messages['errors']['password'] = 'el password es obligatorio';
     }
@@ -76,15 +79,19 @@ class User extends ActiveRecord
 
   public function save()
   {
-    $query = "INSERT INTO users (name, last_name, email, password)
-              VALUES
-          ('{$this->name}', '{$this->last_name}', '{$this->email}', '{$this->password}');";
-
-    $result =  self::$db->query($query);
+    // antes de guardar los datos en la db sanitizarlos
+    // preparar la consulta
+    $sql = "INSERT INTO users (name, last_name, email, password)
+    VALUES (?,?,?,?)";
+    $stmt = self::$db->prepare($sql);
+    // bindear los valores
+    $stmt->bind_param('ssss', $this->name, $this->last_name, $this->email, $this->password);
+    // ejecutar
+    $result = $stmt->execute();
+    // cerrar la conexion
+    $stmt->close();
     if ($result) {
-      // resetear objeto 
       $this->resetear();
-      //$this->errors['success'] = 'registrado con exito';
       self::$messages['info']['success'] = 'registrado con exito';
     }
   }

@@ -6,7 +6,7 @@
   <?= $errors['badrequest'] ?? '' ?>
   <?= $info['success'] ?? '' ?>
 
-  <form action="/register" method="POST">
+  <form action="/register" method="POST" novalidate>
     <label for="name">your name</label>
     <input type="text" id="name" name="name" value="<?= $user['name'] ?? '' ?>">
     <?= $errors['name'] ?? '' ?>

@@ -25,12 +25,7 @@ class ActiveRecord
   public static function find()
   {
 
-    //$query = 'SELECT * FROM branches';
-    // OJO aqui hay un problema => self : hace referencia a la clase donde se define el metodo
-    // static respeta el contexto y hace referencia a la clase de donde se llama al metodo
-    //debuguear(self::class);
     $query = "SELECT * FROM " . static::$table;
-    //$query = "SELECT * FROM " . self::$table;
     $result =  self::$db->query($query);
     $result = self::transformData($result);
     return $result;
@@ -38,11 +33,9 @@ class ActiveRecord
 
   public static function findOne($key, $value)
   {
-    //$query = "SELECT * FROM users WHERE {$key} = '{$value}'";
     $query = "SELECT * FROM " . static::$table . " WHERE {$key} = '{$value}'";
     $result = self::$db->query($query);
     $result = self::transformData($result);
-    //debuguear($result);
     return array_shift($result);
   }
 
