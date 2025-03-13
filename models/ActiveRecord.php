@@ -8,6 +8,7 @@ class ActiveRecord
   // como crear, leer, actualizar, eliminar para reutilizar logica comun
   // entre clases
   protected static $table = '';
+  protected static $columns = [];
   protected static $db;
   protected static  $messages = [
     'errors' => [],
@@ -85,5 +86,71 @@ class ActiveRecord
     foreach (get_object_vars($this) as $key => $value) {
       $this->$key = null;
     }
+  }
+
+  public static function doQuery($sql, $types, $values, $get = false)
+  {
+    $stmt = self::$db->prepare($sql);
+    $stmt->bind_param($types, ...$values);
+    $result = $stmt->execute();
+    if ($get) {
+      $result = $stmt->get_result();
+    }
+    $stmt->close();
+    return $result;
+  }
+
+  public function insertOne($types)
+  {
+    $columns = implode(',', static::$columns);
+    $charMul = rtrim(str_repeat('?,', count(static::$columns)), ',');
+    $values = $this->generateValues();
+    //debuguear($values);
+    $query = "INSERT INTO " . static::$table . "(" . $columns . ") ";
+    $query .= "VALUES (" . $charMul . ")";
+    //debuguear($query);
+    //die();
+    $result = self::doQuery($query, $types, $values);
+    return $result;
+  }
+
+  public static function deleteOne($id)
+  {
+    $query = "DELETE FROM " . static::$table . " WHERE id = ?;";
+    $types = "i";
+    $values = [$id];
+    $result = self::doQuery($query, $types, $values);
+    return $result;
+  }
+
+  public function updateOne($types, $id)
+  {
+    $fields = $this->generateFieldsToSet();
+    $query = "UPDATE " . static::$table . " SET " . $fields . " WHERE id = ?";
+    $values = $this->generateValues();
+    $values[] = $id;
+    $result = self::doQuery($query, $types, $values);
+    return $result;
+  }
+
+  public function generateFieldsToSet()
+  {
+    $char = "";
+    foreach (static::$columns as $values) {
+      //debuguear($values);
+      $char .= $values . "=?,";
+    }
+    return rtrim($char, ',');
+  }
+
+
+  public function generateValues()
+  {
+    $data = [];
+    // iteramos el arreglo de columnas 
+    foreach (static::$columns as $values) {
+      $data[] = $this->$values;
+    }
+    return $data;
   }
 }

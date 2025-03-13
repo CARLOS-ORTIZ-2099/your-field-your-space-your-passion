@@ -14,6 +14,7 @@ class User extends ActiveRecord
   protected  $confirm;
 
   protected static $table = 'users';
+  protected static $columns = ['name', 'last_name', 'email', 'password'];
   // esto no define a un usuario entonces no deberia ser parte de una instancia
   // mas bien deberia ser parte de la clase ya que es una propiedad general
 
@@ -79,17 +80,8 @@ class User extends ActiveRecord
 
   public function save()
   {
-    // antes de guardar los datos en la db sanitizarlos
-    // preparar la consulta
-    $sql = "INSERT INTO users (name, last_name, email, password)
-    VALUES (?,?,?,?)";
-    $stmt = self::$db->prepare($sql);
-    // bindear los valores
-    $stmt->bind_param('ssss', $this->name, $this->last_name, $this->email, $this->password);
-    // ejecutar
-    $result = $stmt->execute();
-    // cerrar la conexion
-    $stmt->close();
+    $types = "ssss";
+    $result = $this->insertOne($types);
     if ($result) {
       $this->resetear();
       self::$messages['info']['success'] = 'registrado con exito';

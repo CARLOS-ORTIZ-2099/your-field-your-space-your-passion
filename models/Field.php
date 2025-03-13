@@ -15,7 +15,7 @@ class Field extends ActiveRecord
   protected $closing_time;
 
   protected static $table = 'fields';
-
+  protected static $columns = ['name', 'rental_price', 'branch_id', 'type_id', 'image', 'opening_hours', 'closing_time'];
 
   public function __construct($arguments = [])
   {
@@ -94,28 +94,10 @@ class Field extends ActiveRecord
     return ['response' => $res, 'image' => $full_path];
   }
 
-
   public function save()
   {
     $types = "sdiisss";
-    $query = "INSERT INTO fields 
-    (name, rental_price, branch_id, type_id, image, opening_hours, closing_time)
-    VALUES(?, ?, ?, ? , ?, ?, ?)";
-
-    $stmt = self::$db->prepare($query);
-    $stmt->bind_param(
-      $types,
-      $this->name,
-      $this->rental_price,
-      $this->branch_id,
-      $this->type_id,
-      $this->image,
-      $this->opening_hours,
-      $this->closing_time
-    );
-
-    $result = $stmt->execute();
-    $stmt->close();
+    $result = $this->insertOne($types);
     if ($result) {
       $this->resetear();
       self::$messages['info']['success'] = 'campo creado con exito';
@@ -125,24 +107,7 @@ class Field extends ActiveRecord
   public function edit($id)
   {
     $types = "sdiisssi";
-    $query = "UPDATE fields SET 
-    name = ?, rental_price = ?, branch_id = ?, type_id = ?, image = ?, opening_hours = ?, closing_time = ?
-    WHERE id = ?";
-
-    $stmt = self::$db->prepare($query);
-    $stmt->bind_param(
-      $types,
-      $this->name,
-      $this->rental_price,
-      $this->branch_id,
-      $this->type_id,
-      $this->image,
-      $this->opening_hours,
-      $this->closing_time,
-      $id
-    );
-    $result = $stmt->execute();
-    $stmt->close();
+    $result = $this->updateOne($types, $id);
     if ($result) {
       $this->resetear();
       self::$messages['info']['success'] = 'campo editado con exito';
@@ -151,11 +116,7 @@ class Field extends ActiveRecord
 
   public static function delete($id)
   {
-    $query = "DELETE FROM fields WHERE id = ?;";
-    $stmt = self::$db->prepare($query);
-    $stmt->bind_param('i', $id);
-    $result = $stmt->execute();
-    $stmt->close();
+    $result = self::deleteOne($id);
     return $result;
   }
 
@@ -209,11 +170,7 @@ class Field extends ActiveRecord
       $types .= 'i';
       $values[] = $skip;
     }
-    $stmt = self::$db->prepare($query);
-    $stmt->bind_param($types, ...$values);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
+    $result = self::doQuery($query, $types, $values, true);
     $result = self::transformData($result);
     return $result;
   }
@@ -231,12 +188,9 @@ class Field extends ActiveRecord
     INNER JOIN types
     ON fields.type_id = types.id';
     $query .= ' WHERE fields.id = ?';
-
-    $stmt = self::$db->prepare($query);
-    $stmt->bind_param('i', $id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
+    $types = 'i';
+    $values = [$id];
+    $result = self::doQuery($query, $types, $values, true);
     $result = self::transformData($result);
     return array_shift($result);
   }

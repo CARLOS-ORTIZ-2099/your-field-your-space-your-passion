@@ -12,6 +12,9 @@ class Reservation extends ActiveRecord
   protected $start_time;
   protected $rental_date;
 
+  protected static $table = 'reservations';
+  protected static $columns = ['user_id', 'field_id', 'total_pay', 'rental_time', 'start_time', 'rental_date'];
+
   public function __construct($arguments = [])
   {
     $this->user_id = $arguments['user_id'] ?? null;
@@ -38,11 +41,7 @@ class Reservation extends ActiveRecord
       $values[] = $edit;
     }
     $query .= " ORDER BY start_time ASC";
-    $stmt = self::$db->prepare($query);
-    $stmt->bind_param($types, ...$values);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
+    $result = self::doQuery($query, $types, $values, true);
     $result = self::transformData($result);
     return $result;
   }
@@ -80,11 +79,8 @@ class Reservation extends ActiveRecord
       $types .= "i";
       $values[] = $userId;
     }
-    $stmt = self::$db->prepare($query);
-    $stmt->bind_param($types, ...$values);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $stmt->close();
+
+    $result = self::doQuery($query, $types, $values, true);
     $result = self::transformData($result);
     return array_shift($result);
   }
@@ -107,33 +103,21 @@ class Reservation extends ActiveRecord
       $types .= 'i';
       $values[] = $data["user_id"];
     }
-    $stmt = self::$db->prepare($query);
-    $stmt->bind_param($types, ...$values);
-    $result = $stmt->execute();
-    $stmt->close();
+
+    $result = self::doQuery($query, $types, $values);
     return $result;
   }
 
   public function save()
   {
     $types = "iidsss";
-    $query = "INSERT INTO reservations (user_id, field_id, total_pay, rental_time, start_time, rental_date) 
-    VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = self::$db->prepare($query);
-    $stmt->bind_param($types, $this->user_id, $this->field_id, $this->total_pay, $this->rental_time, $this->start_time, $this->rental_date);
-    $result = $stmt->execute();
-    $stmt->close();
+    $result = $this->insertOne($types);
     return $result;
   }
 
   public static function delete($id)
   {
-    $query = "DELETE FROM reservations WHERE id = ?";
-
-    $stmt = self::$db->prepare($query);
-    $stmt->bind_param('i', $id);
-    $result = $stmt->execute();
-    $stmt->close();
+    $result = self::deleteOne($id);
     return $result;
   }
 }
