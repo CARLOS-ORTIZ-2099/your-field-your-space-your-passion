@@ -6,7 +6,7 @@
 <section>
   <h1><?= $field['name'] ?></h1>
   <div>
-    <img src="<?= '/images/estadio.webp' ?>" alt="">
+    <img src="<?= 'build/img/estadio.webp' ?>" alt="">
   </div>
 
   <div>
@@ -90,7 +90,7 @@
       <?php endif; ?>
     </div>
     <?php
-    $script = "<script src='js/field.js'></script>";
+    $script = "<script src='build/js/field.js'></script>";
     ?>
   <?php else : ?>
     <h2> para hacer una reserva debes loguearte</h2>

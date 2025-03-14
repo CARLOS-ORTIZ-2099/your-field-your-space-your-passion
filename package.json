@@ -1,0 +1,21 @@
+{
+  "name": "your-field-your-space-your-passion",
+  "version": "1.0.0",
+  "description": "mi proyecto de alquiler de lozas deportivas",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "gulp": "gulp"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "glob": "^11.0.1",
+    "gulp": "^5.0.0",
+    "gulp-sass": "^6.0.1",
+    "gulp-terser": "^2.1.0",
+    "sass": "^1.85.1",
+    "sharp": "^0.33.5"
+  }
+}
