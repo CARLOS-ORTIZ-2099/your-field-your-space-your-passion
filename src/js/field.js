@@ -48,7 +48,7 @@ function validateData() {
   const { rental_time, start_time } = reservation;
   /*  console.log(reservation);
   console.log(busyHours); */
-  const initTime = parseInt(start_time.slice(0, 3));
+  const initTime = parseInt(start_time.slice(0, 2));
   for (let i = initTime; i < initTime + parseInt(rental_time); i++) {
     if (i >= parseInt(closing_time)) {
       alert("elige una cantidad de horas menor");

@@ -1,9 +1,65 @@
+/* en este archivo van los estilos generales de la aplicacion */
+/* en este archivo van variables para reutilizar puede ser colores, tipografia etc */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
 body {
-  background-color: rgb(103, 100, 100);
+  font-family: "Arial", sans-serif;
+  background-color: #e6e9ec;
+  color: #1a2d5c;
+  line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+  color: #1a2d5c;
+}
+
+a {
+  text-decoration: none;
+  color: #00bcd4;
+}
+a:hover {
+  color: #c71585;
+}
+
+button {
+  font-size: 1rem;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
 }
 
 img {
-  width: 350px;
+  max-width: 50%;
+}
+
+.header {
+  background-color: #1b2655;
+  display: flex;
+  align-items: center;
+}
+.header div {
+  border: solid red;
+  flex: 1 1 0;
+}
+.header nav {
+  border: solid green;
+  flex: 3 1 0;
+  display: flex;
+  justify-content: space-around;
 }
 
 .select-hour {

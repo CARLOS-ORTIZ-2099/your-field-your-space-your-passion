@@ -40,7 +40,7 @@
   <?php endif; ?>
 
   <?php
-  $script = "<script src='build/js/fields.js'></script>";
+  $script = "<script src='/build/js/fields.js'></script>";
   ?>
 
 </section>

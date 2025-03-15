@@ -6,14 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <!--  <link rel="stylesheet" href='/styles.css'> -->
-  <link rel="stylesheet" href='build/css/app.css'>
+  <link rel="stylesheet" href='/build/css/app.css'>
 </head>
 
 <body>
-  <header>
+  <header class="header">
     <div>
       <span>
-        <a href="/">logo empresa</a>
+        <a href="/"><img src="/build/img/ucl-trophy.svg" width="100px" alt=""></a>
       </span>
     </div>
     <?php $urlNew = checkUserPath(); ?>

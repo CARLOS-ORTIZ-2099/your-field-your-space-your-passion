@@ -1,10 +1,6 @@
-body {
-  background-color: rgb(103, 100, 100);
-}
-
-img {
-  width: 350px;
-}
+// forma recomendada
+@use "base";
+@use "layout";
 
 .select-hour {
   background-color: rgb(74, 189, 189);

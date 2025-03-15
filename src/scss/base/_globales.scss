@@ -1,0 +1,54 @@
+/* en este archivo van los estilos generales de la aplicacion */
+@use "variables" as v;
+
+// reset  estilos
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+//  configuración del html y body
+html {
+  font-size: 16px; // Base para rem
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: v.$bg-body;
+  color: v.$text-main;
+  line-height: 1.5;
+}
+
+//  estilos tipograficos globales
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+  color: v.$text-main;
+}
+
+// links y botones globales
+
+a {
+  text-decoration: none;
+  color: v.$brand-secondary-cyan;
+
+  &:hover {
+    color: v.$brand-secondary-magenta;
+  }
+}
+
+button {
+  font-size: 1rem;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+}
+
+img {
+  max-width: 50%;
+}

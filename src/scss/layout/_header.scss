@@ -1,0 +1,18 @@
+@use "base/variables" as v;
+
+.header {
+  background-color: v.$bg-header;
+  display: flex;
+  align-items: center;
+  //justify-content: space-around;
+  div {
+    border: solid red;
+    flex: 1 1 0;
+  }
+  nav {
+    border: solid green;
+    flex: 3 1 0;
+    display: flex;
+    justify-content: space-around;
+  }
+}
