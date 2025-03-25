@@ -1,55 +1,35 @@
-<section>
-  <h2>reservations</h2>
-  <!-- <?php debuguear($myReservations[0]) ?> -->
-  <div class="my-reservations-container">
+<section class="reservations-page">
+  <h2 class="reservations-title">Mis Reservas</h2>
 
+  <div class="reservations-container">
     <?php foreach ($myReservations as $myReservation): ?>
-      <div>
-        <span><strong>id_reservation:<?= $myReservation['id'] ?></strong></span>
-        <br>
-        <span><strong> user_id:<?= $myReservation['user_id'] ?></strong></span>
-        <br>
-        <span><strong> field_id:<?= $myReservation['field_id'] ?></strong></span>
-      </div>
+      <article class="reservation-card" id="<?= $myReservation['id'] ?>">
+        <div class="reservation-details">
+          <p><span>Total a pagar:</span> <strong><?= $myReservation['total_pay'] ?></strong></p>
+          <p><span>Horas rentadas:</span> <strong><?= $myReservation['rental_time'] ?></strong></p>
+          <p><span>Hora de inicio:</span> <strong><?= $myReservation['start_time'] ?></strong></p>
+          <p><span>Hora de finalización:</span> <strong><?= $myReservation['end_time'] ?></strong></p>
+          <p><span>Fecha de alquiler:</span> <strong><?= $myReservation['rental_date'] ?></strong></p>
+          <p><span>Campo deportivo:</span> <strong><?= $myReservation['field_name'] ?></strong></p>
+          <p><span>Precio de alquiler:</span> <strong><?= $myReservation['rental_price'] ?></strong></p>
+          <p><span>Tipo de campo:</span> <strong><?= $myReservation['type_field'] ?></strong></p>
+          <p><span>Nombre sucursal:</span> <strong><?= $myReservation['branch_name'] ?></strong></p>
+          <p><span>Dirección:</span> <strong><?= $myReservation['address'] ?></strong></p>
+        </div>
 
-      <article id="<?= $myReservation['id'] ?>">
-        <p>
-          <span>total a pagar :<strong><?= $myReservation['total_pay'] ?></strong></span>
-        </p>
-        <p><span>horas rentadas :<strong><?= $myReservation['rental_time'] ?></strong></span>
-        </p>
-        <p><span>hora de inicio :<strong><?= $myReservation['start_time'] ?></strong></span></p>
-        <p><span>hora de finalizacion :<strong><?= $myReservation['end_time'] ?></strong></span></p>
-        <p> <span>fecha de alquiler :<strong><?= $myReservation['rental_date'] ?></strong></span></p>
-        <p><span>campo deportivo :<strong><?= $myReservation['field_name'] ?></strong></span>
-        </p>
-        <p><span>precio de alquiler :<strong><?= $myReservation['rental_price'] ?></strong></span>
-        </p>
-        <p><span>tipo de campo :<strong><?= $myReservation['type_field'] ?></strong></span></p>
-        <p><span>nombre sucursal :<strong><?= $myReservation['branch_name'] ?></strong></span></p>
-        <p><span>direccion :<strong><?= $myReservation['address'] ?></strong></span></p>
-
-        <div>
-          <?php
-          $result = campareDate($myReservation['rental_date']);
-          ?>
+        <div class="reservation-actions">
+          <?php $result = campareDate($myReservation['rental_date']); ?>
 
           <form action="/profile/delete-reservation" method="POST">
             <input type="hidden" name="id" value="<?= $myReservation['id'] ?>">
-            <input type="submit" value="eliminar reserva">
+            <input type="submit" value="Eliminar Reserva" class="btn btn-delete">
           </form>
-        </div>
 
-        <button
           <?php if ($result): ?>
-          disabled
-          <?php endif; ?>>
-          <a href="/field?id=<?= $myReservation['field_id'] ?>&edit=<?= $myReservation['id'] ?>">editar reserva</a>
-        </button>
-
+            <a href="/field?id=<?= $myReservation['field_id'] ?>&edit=<?= $myReservation['id'] ?>" class="btn btn-edit">Editar Reserva</a>
+          <?php endif; ?>
+        </div>
       </article>
-      <br />
     <?php endforeach; ?>
-
   </div>
 </section>

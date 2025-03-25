@@ -1,4 +1,4 @@
-<section>
+<section class="login-page">
   <h2>inicia sesion</h2>
   <?= $errors['badrequest'] ?? '' ?>
   <!--  <?= $errors['passwordBad'] ?? '' ?> -->

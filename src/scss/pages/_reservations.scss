@@ -1,0 +1,101 @@
+/* .reservations-page {
+  margin-top: 80px;
+  min-height: 100vh;
+} */
+
+.reservations-page {
+  /*   max-width: 800px; */
+  margin: 20px auto;
+  padding: 20px;
+  margin-top: 80px;
+  min-height: 100vh;
+  background: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  .reservations-title {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .reservations-container {
+    display: flex;
+    /* flex-direction: column; */
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  .reservation-card {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+    }
+
+    .reservation-details {
+      p {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1rem;
+        color: #555;
+        margin: 8px 0;
+
+        span {
+          font-weight: bold;
+          color: #444;
+        }
+
+        strong {
+          color: #007bff;
+        }
+      }
+    }
+
+    .reservation-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+
+      .btn {
+        text-decoration: none;
+        font-size: 0.7rem;
+        padding: 8px 12px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-align: center;
+        transition: background 0.3s ease, transform 0.2s ease;
+
+        &.btn-delete {
+          background: #dc3545;
+          color: white;
+          border: none;
+          cursor: pointer;
+
+          &:hover {
+            background: darken(#dc3545, 10%);
+            transform: scale(1.05);
+          }
+        }
+
+        &.btn-edit {
+          background: #28a745;
+          color: white;
+          text-decoration: none;
+
+          &:hover {
+            background: darken(#28a745, 10%);
+            transform: scale(1.05);
+          }
+        }
+      }
+    }
+  }
+}

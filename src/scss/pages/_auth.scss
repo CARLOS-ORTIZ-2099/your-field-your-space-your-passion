@@ -1,0 +1,38 @@
+.profile {
+  padding: 20px;
+  max-width: 400px;
+  margin: 20px auto;
+  text-align: center;
+  margin-top: 90px;
+  min-height: 100vh;
+
+  .profile-title {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  .profile-info {
+    font-size: 1rem;
+    color: #555;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+
+    p {
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 500;
+
+      span {
+        font-weight: bold;
+        color: #444;
+      }
+
+      strong {
+        color: #007bff;
+      }
+    }
+  }
+}

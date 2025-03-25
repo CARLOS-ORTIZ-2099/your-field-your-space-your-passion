@@ -1,5 +1,5 @@
 <section class="banner-container">
-  <h2>Juega sin limites, esta es tu pasión</h2>
+  <h2>the pitch is our, this our is passion</h2>
 </section>
 
 
@@ -35,7 +35,7 @@
 
 
 <section class="post-banner-container">
-  <h2>disfruta el momento</h2>
+  <h2>enjoy the present</h2>
 </section>
 
 

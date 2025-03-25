@@ -38,15 +38,22 @@ async function callApi(skip = 0) {
 
 function renderViewFields(data) {
   data.forEach((element) => {
-    const div = document.createElement("DIV");
-    div.innerHTML = `<h3>${element.name}</h3>
-      <img src="<?= 'images/estadio.webp' ?>" alt="image-estadio">
-      <div>
-        <span> apertura: <strong>${element.opening_hours}</strong></span>
-        <span> cierre: <strong>${element.closing_time}</strong></span>
-      </div>
-      <a href="/field?id=${element.id}">ver sucursal</a>`;
-    fieldsContainer.appendChild(div);
+    const article = document.createElement("ARTICLE");
+    article.classList.add("field-card");
+    article.innerHTML = `
+  <div class="field-card-image">
+    <img src="/build/img/estadio.webp" alt="imagen del estadio">
+  </div>
+  <div class="field-card-content">
+    <h3 class="field-card-title">${element.name}</h3>
+    <div class="field-card-schedule">
+      <span><strong>Apertura:</strong> ${element.opening_hours}</span>
+      <span><strong>Cierre:</strong> ${element.closing_time}</span>
+    </div>
+    <a href="/field?id=${element.id}" class="field-card-link">Ver sucursal</a>
+  </div>
+`;
+    fieldsContainer.appendChild(article);
   });
 
   if (data.length === 0) {

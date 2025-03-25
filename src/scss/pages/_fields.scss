@@ -1,0 +1,246 @@
+@use "base/variables" as v;
+
+// contenedor principal
+.fields-page-container {
+  min-height: 100vh;
+  margin-top: 80px;
+  display: flex;
+  //border: solid red 3px;
+
+  @media (max-width: v.$tablet) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+// aside
+.aside-fields-page {
+  //border: solid green 1px;
+  width: 30%;
+  position: fixed;
+  height: 100%;
+
+  @media (max-width: v.$tablet) {
+    width: 100%;
+    position: static;
+  }
+}
+
+// campos deportivos
+.section-fields-page {
+  //border: dashed rgb(35, 38, 182) 1px;
+  width: 70%;
+  margin-left: 30%;
+  @media (max-width: v.$tablet) {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+// formulario
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background-color: v.$bg-body;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  label {
+    font-weight: bold;
+    color: v.$text-light;
+  }
+
+  .select {
+    padding: 8px;
+    border: 1px solid v.$brand-primary;
+    border-radius: 4px;
+    background-color: v.$bg-body;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:focus {
+      outline: none;
+      border-color: v.$brand-primary;
+      box-shadow: 0 0 5px rgba(v.$brand-primary, 0.5);
+    }
+  }
+
+  .filtrar,
+  .limpiar {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .filtrar {
+    // estilos principal
+    background-color: v.$brand-primary;
+    color: white;
+    // oscurece el boton cuando se hace hover si y solo si el boton esta habilitado
+    &:hover:enabled {
+      background-color: darken(v.$brand-primary, 10%);
+    }
+    // aclara el color del boton y desabilita el cursor cuando el boton esta inhabilitado
+    &:disabled {
+      background-color: lighten(v.$brand-primary, 30%);
+      cursor: not-allowed;
+    }
+  }
+
+  .limpiar {
+    background-color: v.$brand-secondary-magenta;
+    color: white;
+
+    &:hover:enabled {
+      background-color: darken(v.$brand-secondary-magenta, 10%);
+    }
+
+    &:disabled {
+      background-color: lighten(v.$brand-secondary-magenta, 30%);
+      cursor: not-allowed;
+    }
+  }
+}
+
+// boton de crear campo
+.admin-link {
+  display: block;
+  margin: 20px auto;
+  width: 70%;
+  padding: 12px 20px;
+  background-color: v.$brand-primary;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: darken(v.$brand-primary, 10%);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    background-color: darken(v.$brand-primary, 15%);
+    transform: translateY(1px);
+  }
+}
+
+// boton para cargar mas campos
+.button-call-api {
+  display: block;
+  margin: 20px auto;
+  width: 70%;
+  padding: 12px 20px;
+  background-color: v.$brand-primary;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: darken(v.$brand-primary, 10%);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    background-color: darken(v.$brand-primary, 15%);
+    transform: translateY(1px);
+  }
+}
+
+// contenedor de campos deportivos
+
+.fields-container {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-width: 1300px;
+  //border: solid yellow 3px;
+  @media (max-width: v.$tablet) {
+    grid-template-columns: repeat(1, minmax(250px, 1fr));
+  }
+}
+
+// Estilos para cada card
+.field-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Imagen
+.field-card-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+// contenido
+.field-card-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.field-card-title {
+  font-size: 1.4rem;
+  color: v.$brand-primary;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.field-card-schedule {
+  font-size: 0.9rem;
+  color: v.$gray-900;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.field-card-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: v.$brand-primary;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darken(v.$brand-primary, 10%);
+  }
+}

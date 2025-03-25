@@ -59,7 +59,7 @@ function campareDate($myReservation)
 
   $rental_date = strtotime($myReservation);
 
-  if ($rental_date <= $now) {
+  if ($rental_date > $now) {
     return true;
   }
   return false;
