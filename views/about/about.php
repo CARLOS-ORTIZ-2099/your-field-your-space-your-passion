@@ -1,4 +1,6 @@
-<section>
+<section class="about-page-container">
+
+
   <div>
     <h2>¿Quiénes somos?</h2>
     <p>app.com.pe es una plataforma peruana en línea dedicada a facilitar la organización y gestión de partidos de fútbol amateur. La APP ofrece servicios que permiten a los usuarios encontrar canchas disponibles, reservar horarios, y coordinar partidos con otros jugadores. Además, incluye funcionalidades para la creación de equipos, la programación de partidos, y el seguimiento de resultados.

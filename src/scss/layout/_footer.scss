@@ -1,0 +1,17 @@
+@use "base/variables" as v;
+footer {
+  background-color: v.$bg-footer;
+  color: v.$text-light;
+  text-align: center;
+  padding: 1.5rem 0;
+  font-size: 1rem;
+
+  position: relative;
+  bottom: 0;
+  width: 100%;
+
+  @media (max-width: v.$tablet) {
+    font-size: 0.9rem;
+    padding: 1rem;
+  }
+}

@@ -9,11 +9,15 @@ import sharp from "sharp";
 
 const sass = gulpSass(dartSass);
 
+/* objeto que indica la ubicacion de los archivos a comprimir, le indicamos 
+   donde estaran los archivos css y donde estaran los archivos js 
+*/
 const paths = {
   scss: "src/scss/**/*.scss",
   js: "src/js/**/*.js",
 };
 
+// funcion que procesa y comprime los archivos css
 export function css(done) {
   src(paths.scss, { sourcemaps: true })
     .pipe(
@@ -25,18 +29,23 @@ export function css(done) {
   done();
 }
 
+// funcion que procesa y comprime los archivos js
 export function js(done) {
   src(paths.js).pipe(terser()).pipe(dest("./public/build/js"));
   done();
 }
 
 export async function imagenes(done) {
+  // ruta donde estan las imagenes a comprimir
   const srcDir = "./src/img";
+  // ruta donde se guardaran dichas imagenes despues de la compresion
   const buildDir = "./public/build/img";
   const images = await glob("./src/img/**/*");
 
   images.forEach((file) => {
+    // sacamos la ruta relativa
     const relativePath = path.relative(srcDir, path.dirname(file));
+    // unimos las ruta
     const outputSubDir = path.join(buildDir, relativePath);
     procesarImagenes(file, outputSubDir);
   });

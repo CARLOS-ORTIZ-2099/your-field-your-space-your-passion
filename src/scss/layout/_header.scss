@@ -4,15 +4,81 @@
   background-color: v.$bg-header;
   display: flex;
   align-items: center;
-  //justify-content: space-around;
+  justify-content: space-between;
+  padding: 10px 20px;
+  height: 80px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  //opacity: 0.5;
+
   div {
-    border: solid red;
-    flex: 1 1 0;
+    //border: solid red 1px;
   }
+
+  .logo-container {
+    span {
+      a {
+        img {
+          width: 70px;
+        }
+      }
+    }
+  }
+  .menu-hidden {
+    display: none;
+
+    img {
+      width: 70px;
+      cursor: pointer;
+    }
+  }
+
   nav {
-    border: solid green;
-    flex: 3 1 0;
+    //border: solid green 1px;
     display: flex;
-    justify-content: space-around;
+    gap: 20px;
+
+    a {
+      text-decoration: none;
+      color: v.$brand-secondary-cyan;
+      font-weight: bold;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: v.$brand-secondary-magenta;
+      }
+    }
+  }
+
+  @media (max-width: v.$tablet) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    nav {
+      display: none;
+      //border: solid purple 2px;
+      flex-direction: column;
+      position: absolute;
+      top: 80px;
+      min-height: 100vh;
+      right: 0;
+      background: gray;
+      width: 100%;
+      padding: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+      a {
+        display: block;
+        padding: 10px;
+        text-align: center;
+      }
+    }
+
+    .menu-hidden {
+      display: block;
+    }
   }
 }

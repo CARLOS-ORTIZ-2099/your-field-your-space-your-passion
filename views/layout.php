@@ -11,11 +11,21 @@
 
 <body>
   <header class="header">
-    <div>
+    <div class="logo-container">
       <span>
-        <a href="/"><img src="/build/img/ucl-trophy.svg" width="100px" alt=""></a>
+        <a href="/">
+          <img src="/build/img/logo.svg" width="70px" alt="logo">
+        </a>
       </span>
     </div>
+
+    <div class="menu-hidden">
+      <img
+        src="/build/img/menu.svg"
+        alt="menu-movil"
+        width="40px">
+    </div>
+
     <?php $urlNew = checkUserPath(); ?>
     <?php
 
