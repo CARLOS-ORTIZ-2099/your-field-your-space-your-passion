@@ -153,7 +153,7 @@
     color: v.$text-main;
   }
 
-  .about-grid {
+  .posts-grid {
     //border: solid rgb(37, 206, 107) 3px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -162,7 +162,7 @@
     margin: 0 auto;
   }
 
-  .about-item {
+  .posts-item {
     background: white;
     padding: 2rem;
     //border-radius: 10px;

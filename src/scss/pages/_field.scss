@@ -1,0 +1,179 @@
+/* Contenedor principal de la reserva */
+.reservation-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 80px;
+}
+
+/* Título principal */
+.reservation-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Imagen del estadio */
+.reservation-image {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.reservation-image img {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Información del campo */
+.reservation-info {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.info-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.reservation-info p {
+  margin: 5px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.reservation-info strong {
+  color: #222;
+}
+
+/* Sección de formulario de reserva */
+.reservation-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border 0.3s;
+}
+
+.form-input:focus,
+.form-select:focus {
+  border: 1px solid #007bff;
+  outline: none;
+}
+
+/* Contenedor de horas disponibles */
+.free-hours-container {
+  margin-top: 15px;
+  padding: 10px;
+  background: #eef;
+  border-radius: 5px;
+}
+
+/* Botón de reserva */
+.button-reservation {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s;
+}
+
+.button-reservation:hover {
+  background: #0056b3;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Mensaje de inicio de sesión */
+.login-message {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #d9534f;
+  margin-top: 20px;
+}
+
+/* Opciones de administración */
+.admin-options {
+  margin-top: 20px;
+}
+
+.delete-button {
+  width: 100%;
+  padding: 10px;
+  background: #dc3545;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s;
+}
+
+.delete-button:hover {
+  background: #c82333;
+}
+
+.edit-link {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  padding: 10px;
+  background: #28a745;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.edit-link:hover {
+  background: #218838;
+}

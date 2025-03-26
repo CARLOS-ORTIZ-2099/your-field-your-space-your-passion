@@ -1,0 +1,57 @@
+@use "base/variables" as v;
+.posts-container-page {
+  //border: solid red 1px;
+  margin-top: 80px;
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: v.$bg-body;
+  min-height: 100vh;
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: v.$text-main;
+  }
+
+  .posts-grid {
+    //border: solid rgb(37, 206, 107) 3px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .posts-item {
+    background: white;
+    padding: 2rem;
+    //border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    img {
+      max-width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      color: v.$brand-primary;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: v.$text-light;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+  }
+
+  @media (max-width: v.$tablet) {
+    padding: 3rem 1rem;
+  }
+}

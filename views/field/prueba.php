@@ -1,14 +1,7 @@
-<!-- <?= debuguear($field); ?> -->
-<!-- <?php debuguear($_SESSION); ?> -->
-<!-- <?php debuguear($reservation); ?> -->
-<!-- <?php debuguear($reservationId); ?> -->
-<!-- pagina con la informacion de la reserva -->
-
 <section class="reservation-container">
   <h1 class="reservation-title"><?= $field['name'] ?></h1>
-
   <div class="reservation-image">
-    <img src="<?= 'build/img/estadio.webp' ?>" alt="imagen del campo">
+    <img src="<?= 'build/img/estadio.webp' ?>" alt="Imagen del estadio">
   </div>
 
   <div class="reservation-info">
@@ -21,10 +14,10 @@
     <p>- Abrimos: <strong><?= $field['opening_hours'] ?> <?= checkShift($field['opening_hours']) ?></strong></p>
     <p>- Cerramos: <strong><?= $field['closing_time'] ?> <?= checkShift($field['closing_time']) ?></strong></p>
   </div>
+  <!--  -->
 
-  <!-- seccion de reserva -->
   <?php if ($id): ?>
-    <!-- seccion de reserva -->
+
     <div class="reservation-form">
       <?php
       $fechaMax = new DateTime();
@@ -36,53 +29,31 @@
         <?= $reservation ? "Edita tu reserva aquí" : "Haz tu reserva aquí" ?>
       </h2>
 
-      <!-- seleccionar fecha -->
       <label for="date">Elige tu fecha</label>
       <input class="form-input date" id="date" type="date" min="<?= date('Y-m-d') ?>" max="<?= $fechaMax ?>" value="<?= $reservation ? $reservation['rental_date'] : "" ?>">
-
-      <!-- seleccionar cantidad de horas -->
+      <!--  -->
       <?php $quantityHours = 9; ?>
-      <label for="hours">elige la cantidad de horas</label>
+      <label for="hours">Elige la cantidad de horas</label>
       <select class="form-select quantity-hours" name="hours" id="hours">
-        <option
-          <?= $reservation ? "disabled" : "" ?>
-          value="">
-          ---
-        </option>
+        <option value="">---</option>
 
         <?php for ($init = 1; $init <= $quantityHours; $init++): ?>
-          <option
-            value="<?= $field['rental_price'] ?>-<?= $init ?>"
-            <?php if ($reservation && $init == $reservation['rental_time']): ?>
-            selected
-            <?php elseif ($reservation && $init !=  $reservation['rental_time']): ?>
-            disabled
-            <?php endif; ?>>
-
+          <option value="<?= $field['rental_price'] ?>-<?= $init ?>"
+            <?= $reservation && $init == $reservation['rental_time'] ? "selected" : "" ?>
+            <?= $reservation && $init != $reservation['rental_time'] ? "disabled" : "" ?>>
             <?= $init >= 2 ? "$init horas" : " $init hora"; ?> (<?= $field['rental_price'] * $init ?>$)
-
           </option>
         <?php endfor; ?>
 
       </select>
 
 
-      <input type="hidden" id="user-id" value="<?= $id ?>">
-      <input type="hidden" id="opening_hours" value="<?= substr($field['opening_hours'], 0, 2) ?>">
-      <input type="hidden" id="closing_time" value="<?= substr($field['closing_time'], 0, 2) ?>">
 
 
-      <!-- AQUI VAN LAS HORAS DISPONIBLES ESTAS VENDRAN DE LA BASE DEL BACKEND -->
-      <div class="free-hours-container">
+      <div class="free-hours-container"></div>
 
+      <button class="button-reservation hidden">Generar reserva</button>
 
-      </div>
-
-      <button class="button-reservation hidden">
-        <?= $reservation ? "Editar reserva" : "Generar reserva" ?>
-      </button>
-
-      <!--  formulario para eliminar reserva -->
       <?php if ($isAdmin && !$reservationId): ?>
         <form action="/profile/delete-field" method="POST">
           <input type="hidden" name="id" value="<?= $field['id'] ?>">
@@ -92,14 +63,9 @@
       <?php endif; ?>
     </div>
 
-    <?php
-    $script = "<script src='build/js/field.js'></script>";
-    ?>
 
   <?php else : ?>
-    <h2 class="login-message"> para hacer una reserva debes loguearte</h2>
+    <h2 class="login-message">Para hacer una reserva debes loguearte</h2>
   <?php endif; ?>
-
-
 
 </section>

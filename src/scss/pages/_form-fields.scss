@@ -1,0 +1,91 @@
+@use "base/variables" as v;
+
+.rental-form {
+  max-width: 500px;
+  margin: 100px auto;
+  min-height: 100vh;
+  .rental-child {
+    height: 50%;
+    /* border: solid red 2px; */
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  .error {
+    display: block;
+    background: v.$error-bg;
+    color: v.$error-text;
+    font-size: 0.9rem;
+    margin-top: -8px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .success {
+    display: block;
+    background: v.$success-bg;
+    color: v.$success-text;
+    font-size: 0.9rem;
+    margin-top: -8px;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      label {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #555;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          border-color: #007bff;
+        }
+      }
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+
+      &:hover {
+        background: darken(#007bff, 10%);
+        transform: scale(1.05);
+      }
+    }
+  }
+}
