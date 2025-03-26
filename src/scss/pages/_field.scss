@@ -1,13 +1,22 @@
-/* Contenedor principal de la reserva */
+@use "base/variables" as v;
 .reservation-container {
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
-  background: #f8f9fa;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-top: 80px;
+  min-height: 100vh;
+}
+
+/* Contenedor principal de la reserva */
+
+.field-container {
+  background: #f8f9fa;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 /* Título principal */
@@ -15,8 +24,10 @@
   text-align: center;
   font-size: 28px;
   font-weight: bold;
-  color: #333;
+  color: v.$brand-primary;
   margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 /* Imagen del estadio */
@@ -24,6 +35,7 @@
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  /* border: solid green 1px; */
 }
 
 .reservation-image img {
@@ -102,14 +114,63 @@
   padding: 10px;
   background: #eef;
   border-radius: 5px;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 15px;
+}
+
+.button-decoration {
+  position: relative;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 3px;
+    background: linear-gradient(90deg, #1a2d5c, #c71585, #00bcd4);
+    background-size: 300%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    transition: background-position 0.5s ease-in-out;
+  }
+
+  &:hover {
+    transform: scale(1.05);
+
+    &::before {
+      animation: border-animation 1.5s infinite alternate;
+    }
+  }
+}
+
+// Animación del borde
+@keyframes border-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 /* Botón de reserva */
 .button-reservation {
   width: 100%;
   padding: 10px;
-  background: #007bff;
-  color: white;
+  background: v.$btn-primary-bg;
+  color: v.$btn-primary-text;
   font-size: 16px;
   font-weight: bold;
   border: none;
@@ -136,16 +197,11 @@
   margin-top: 20px;
 }
 
-/* Opciones de administración */
-.admin-options {
-  margin-top: 20px;
-}
-
 .delete-button {
   width: 100%;
   padding: 10px;
-  background: #dc3545;
-  color: white;
+  background: v.$brand-secondary-magenta;
+  color: v.$text-secondary;
   font-size: 16px;
   font-weight: bold;
   border: none;
@@ -164,8 +220,8 @@
   text-align: center;
   width: 100%;
   padding: 10px;
-  background: #28a745;
-  color: white;
+  background: v.$brand-secondary-cyan;
+  color: v.$text-secondary;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
@@ -175,5 +231,5 @@
 }
 
 .edit-link:hover {
-  background: #218838;
+  background: #1a4e93;
 }

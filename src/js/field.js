@@ -171,21 +171,17 @@ function renderViewHours(busyHours) {
   while (init < hours.length) {
     const result = checkHours(busyHours, hours[init]);
     //console.log(result);
+    const buttons = document.createElement("BUTTON");
+    buttons.innerText = `${hours[init]}`;
+    buttons.id = hours[init];
     if (result) {
-      const buttonDisabled = document.createElement("BUTTON");
-      buttonDisabled.disabled = true;
-      buttonDisabled.classList.add("button-disabled");
-      buttonDisabled.innerText = `${hours[init]}`;
-      buttonDisabled.id = hours[init];
-      freeHoursContainer.appendChild(buttonDisabled);
-      init++;
-      continue;
+      buttons.disabled = true;
+      buttons.classList.add("button-disabled");
+    } else {
+      buttons.classList.add("button-decoration");
+      buttons.addEventListener("click", selectHour);
     }
-    const button = document.createElement("BUTTON");
-    button.innerText = `${hours[init]}`;
-    button.id = hours[init];
-    button.addEventListener("click", selectHour);
-    freeHoursContainer.appendChild(button);
+    freeHoursContainer.appendChild(buttons);
     init++;
   }
   if (!document.querySelector(".title-hours")) {

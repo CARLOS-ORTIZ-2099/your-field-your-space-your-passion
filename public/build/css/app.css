@@ -47,7 +47,7 @@ button {
   background-color: #1b2655;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 10px 20px;
   height: 80px;
   position: fixed;
@@ -56,18 +56,19 @@ button {
   z-index: 999;
 }
 .header .logo-container span a img {
-  width: 70px;
+  width: 50px;
 }
 .header .menu-hidden {
   display: none;
 }
 .header .menu-hidden img {
-  width: 70px;
+  width: 50px;
   cursor: pointer;
 }
 .header nav {
+  /* border: solid green 1px; */
   display: flex;
-  gap: 20px;
+  gap: 30px;
 }
 .header nav a {
   text-decoration: none;
@@ -391,8 +392,15 @@ footer {
 }
 
 .section-fields-page {
+  text-align: center;
+  /* border: dashed rgb(35, 38, 182) 1px; */
   width: 70%;
   margin-left: 30%;
+}
+.section-fields-page h2 {
+  margin-top: 30px;
+  color: #00bcd4;
+  font-weight: bolder;
 }
 @media (max-width: 768px) {
   .section-fields-page {
@@ -484,7 +492,7 @@ footer {
 .button-call-api {
   display: block;
   margin: 20px auto;
-  width: 70%;
+  width: 30%;
   padding: 12px 20px;
   background-color: #1a2d5c;
   color: white;
@@ -493,6 +501,11 @@ footer {
   text-decoration: none;
   border-radius: 6px;
   transition: background-color 0.3s ease, transform 0.2s ease;
+}
+@media (max-width: 768px) {
+  .button-call-api {
+    width: 70%;
+  }
 }
 .button-call-api:hover {
   background-color: rgb(14.7627118644, 25.5508474576, 52.2372881356);
@@ -504,16 +517,27 @@ footer {
 }
 
 .fields-container {
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, minmax(200px, 1fr));
   gap: 20px;
   padding: 20px;
   max-width: 1300px;
+  /* border: solid yellow 3px; */
+  justify-content: center;
+  align-items: center;
 }
 @media (max-width: 768px) {
   .fields-container {
     grid-template-columns: repeat(1, minmax(250px, 1fr));
   }
+}
+
+.message-empty {
+  background: #ffcc00;
+}
+.message-empty h2 {
+  color: #1a2d5c;
 }
 
 .field-card {
@@ -871,16 +895,23 @@ footer {
   transform: scale(1.05);
 }
 
-/* Contenedor principal de la reserva */
 .reservation-container {
   max-width: 900px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
-  background: #f8f9fa;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-top: 80px;
+  min-height: 100vh;
+}
+
+/* Contenedor principal de la reserva */
+.field-container {
+  background: #f8f9fa;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 /* Título principal */
@@ -888,8 +919,10 @@ footer {
   text-align: center;
   font-size: 28px;
   font-weight: bold;
-  color: #333;
+  color: #1a2d5c;
   margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 /* Imagen del estadio */
@@ -897,6 +930,7 @@ footer {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  /* border: solid green 1px; */
 }
 
 .reservation-image img {
@@ -975,14 +1009,57 @@ footer {
   padding: 10px;
   background: #eef;
   border-radius: 5px;
+  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: 15px;
 }
 
+.button-decoration {
+  position: relative;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+}
+.button-decoration::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(90deg, #1a2d5c, #c71585, #00bcd4);
+  background-size: 300%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: background-position 0.5s ease-in-out;
+}
+.button-decoration:hover {
+  transform: scale(1.05);
+}
+.button-decoration:hover::before {
+  animation: border-animation 1.5s infinite alternate;
+}
+
+@keyframes border-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
 /* Botón de reserva */
 .button-reservation {
   width: 100%;
   padding: 10px;
-  background: #007bff;
-  color: white;
+  background: #1a2d5c;
+  color: #fff;
   font-size: 16px;
   font-weight: bold;
   border: none;
@@ -1009,16 +1086,11 @@ footer {
   margin-top: 20px;
 }
 
-/* Opciones de administración */
-.admin-options {
-  margin-top: 20px;
-}
-
 .delete-button {
   width: 100%;
   padding: 10px;
-  background: #dc3545;
-  color: white;
+  background: #c71585;
+  color: aliceBlue;
   font-size: 16px;
   font-weight: bold;
   border: none;
@@ -1037,8 +1109,8 @@ footer {
   text-align: center;
   width: 100%;
   padding: 10px;
-  background: #28a745;
-  color: white;
+  background: #00bcd4;
+  color: aliceBlue;
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
@@ -1048,7 +1120,7 @@ footer {
 }
 
 .edit-link:hover {
-  background: #218838;
+  background: #1a4e93;
 }
 
 .posts-container-page {

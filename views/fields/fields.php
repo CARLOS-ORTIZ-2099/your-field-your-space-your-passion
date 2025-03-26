@@ -33,7 +33,7 @@
   </aside>
 
   <section class="section-fields-page">
-    <h2>Alquileres</h2>
+    <h2>Campos deportivos</h2>
 
     <div class="fields-container">
 

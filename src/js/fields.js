@@ -42,7 +42,7 @@ function renderViewFields(data) {
     article.classList.add("field-card");
     article.innerHTML = `
   <div class="field-card-image">
-    <img src="/build/img/estadio.webp" alt="imagen del estadio">
+    <img src=${"/uploads/" + element.image} alt="imagen del estadio">
   </div>
   <div class="field-card-content">
     <h3 class="field-card-title">${element.name}</h3>
@@ -70,10 +70,13 @@ function renderViewFields(data) {
 
 function createTemplateMessage(message) {
   const div = document.createElement("DIV");
+  div.classList.add("message-empty");
   div.innerHTML = `
      <h2>${message}</h2>
   `;
-  fieldsContainer.appendChild(div);
+  if (!document.querySelector(".message-empty")) {
+    fieldsContainer.insertAdjacentElement("afterend", div);
+  }
 }
 
 function showButtons() {
@@ -117,6 +120,7 @@ function disabledButtons(boolean, cb = false) {
   limpiar.disabled = boolean;
 }
 function setearParameters(district, type, pre) {
+  document.querySelector(".message-empty")?.remove();
   fieldsContainer.innerHTML = "";
   count = 0;
   parameters.district = district;

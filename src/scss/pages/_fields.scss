@@ -28,9 +28,15 @@
 
 // campos deportivos
 .section-fields-page {
-  //border: dashed rgb(35, 38, 182) 1px;
+  text-align: center;
+  /* border: dashed rgb(35, 38, 182) 1px; */
   width: 70%;
   margin-left: 30%;
+  h2 {
+    margin-top: 30px;
+    color: v.$brand-secondary-cyan;
+    font-weight: bolder;
+  }
   @media (max-width: v.$tablet) {
     width: 100%;
     margin-left: 0;
@@ -81,11 +87,9 @@
     // estilos principal
     background-color: v.$brand-primary;
     color: white;
-    // oscurece el boton cuando se hace hover si y solo si el boton esta habilitado
     &:hover:enabled {
       background-color: darken(v.$brand-primary, 10%);
     }
-    // aclara el color del boton y desabilita el cursor cuando el boton esta inhabilitado
     &:disabled {
       background-color: lighten(v.$brand-primary, 30%);
       cursor: not-allowed;
@@ -136,7 +140,7 @@
 .button-call-api {
   display: block;
   margin: 20px auto;
-  width: 70%;
+  width: 30%;
   padding: 12px 20px;
   background-color: v.$brand-primary;
   color: white;
@@ -145,7 +149,9 @@
   text-decoration: none;
   border-radius: 6px;
   transition: background-color 0.3s ease, transform 0.2s ease;
-
+  @media (max-width: v.$tablet) {
+    width: 70%;
+  }
   &:hover {
     background-color: darken(v.$brand-primary, 10%);
     transform: translateY(-2px);
@@ -160,14 +166,24 @@
 // contenedor de campos deportivos
 
 .fields-container {
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, minmax(200px, 1fr));
   gap: 20px;
   padding: 20px;
   max-width: 1300px;
-  //border: solid yellow 3px;
+  /* border: solid yellow 3px; */
+  justify-content: center;
+  align-items: center;
   @media (max-width: v.$tablet) {
     grid-template-columns: repeat(1, minmax(250px, 1fr));
+  }
+}
+
+.message-empty {
+  background: v.$warning-bg;
+  h2 {
+    color: v.$warning-text;
   }
 }
 

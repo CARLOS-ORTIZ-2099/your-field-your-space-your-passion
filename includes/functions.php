@@ -42,7 +42,8 @@ function checkUserPath()
 function deleteImage($name)
 {
   if ($name) {
-    $route = __DIR__ . "/../uploads/" . $name;
+    //$route = __DIR__ . "/../uploads/" . $name;
+    $route = __DIR__ . "/../public/uploads/" . $name;
     // echo $route;
     if (file_exists($route)) {
       $result = unlink($route);

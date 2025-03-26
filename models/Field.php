@@ -85,7 +85,7 @@ class Field extends ActiveRecord
     $path = $_FILES['image']['full_path'];
     $uniqueId = uniqid();
     $full_path = $uniqueId . "-" . $path;
-    $routeDir = __DIR__ . "/../uploads";
+    $routeDir = __DIR__ . "/../public/uploads";
     if (!file_exists($routeDir)) {
       mkdir($routeDir);
     }
@@ -178,8 +178,7 @@ class Field extends ActiveRecord
   public static function getOneById($id)
   {
 
-    $query = 'SELECT fields.*, branches.name AS nombre_sucursal, branches.address,
-    branches.image, districts.name AS distrito, types.name AS tipo_cancha
+    $query = 'SELECT fields.*, branches.name AS nombre_sucursal, branches.address, districts.name AS distrito, types.name AS tipo_cancha
     FROM fields 
     INNER JOIN branches 
     ON fields.branch_id = branches.id
