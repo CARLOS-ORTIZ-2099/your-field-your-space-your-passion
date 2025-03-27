@@ -1,4 +1,4 @@
-<nav>
+<nav class="navbar-movil navbar">
   <!-- aui nos sersionamos si el usuario es un admin -->
   <a href="/profile">profile</a>
   <a href="/profile/my-reservations">my reservations</a>

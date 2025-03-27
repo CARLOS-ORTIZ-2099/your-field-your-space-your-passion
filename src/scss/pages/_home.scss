@@ -2,6 +2,7 @@
 // banner principal
 .banner-container {
   // banner
+  text-transform: uppercase;
   margin-top: 80px;
   background-image: url("/build/img/banner.webp");
   min-height: 70vh;
@@ -101,6 +102,7 @@
 // banner secundario
 .post-banner-container {
   // banner
+  text-transform: uppercase;
   margin-top: 80px;
   background-image: url("/build/img/posts.webp");
   min-height: 40vh;

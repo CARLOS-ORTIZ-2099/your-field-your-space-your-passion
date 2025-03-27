@@ -32,7 +32,7 @@
     if ($urlNew[0] === 'profile'): ?>
       <?php require_once __DIR__ . '/template/nav-profile.php' ?>
     <?php else: ?>
-      <nav>
+      <nav class="navbar-movil navbar">
         <a href="/aboutUs">about us</a>
         <a href="/fields">fields</a>
         <a href="/blog">blog</a>
@@ -58,6 +58,7 @@
     Copyright @2025 - Todos los derechos reservados
   </footer>
 
+  <script src="/build/js/show-menu.js"></script>
   <?php echo $script ?? null; ?>
 </body>
 

@@ -86,7 +86,6 @@ button {
     justify-content: space-between;
   }
   .header nav {
-    display: none;
     flex-direction: column;
     position: absolute;
     top: 80px;
@@ -101,6 +100,9 @@ button {
     display: block;
     padding: 10px;
     text-align: center;
+  }
+  .header .navbar-movil {
+    display: none;
   }
   .header .menu-hidden {
     display: block;
@@ -125,6 +127,7 @@ footer {
 }
 
 .banner-container {
+  text-transform: uppercase;
   margin-top: 80px;
   background-image: url("/build/img/banner.webp");
   min-height: 70vh;
@@ -210,6 +213,7 @@ footer {
 }
 
 .post-banner-container {
+  text-transform: uppercase;
   margin-top: 80px;
   background-image: url("/build/img/posts.webp");
   min-height: 40vh;

@@ -54,7 +54,6 @@
     justify-content: space-between;
 
     nav {
-      display: none;
       //border: solid purple 2px;
       flex-direction: column;
       position: absolute;
@@ -71,6 +70,9 @@
         padding: 10px;
         text-align: center;
       }
+    }
+    .navbar-movil {
+      display: none;
     }
 
     .menu-hidden {
