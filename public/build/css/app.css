@@ -74,7 +74,7 @@ button {
   text-decoration: none;
   color: #00bcd4;
   font-weight: bold;
-  transition: color 0.3s ease;
+  text-transform: capitalize;
 }
 .header nav a:hover {
   color: #c71585;
@@ -91,7 +91,7 @@ button {
     top: 80px;
     min-height: 100vh;
     right: 0;
-    background: gray;
+    background: rgba(30, 30, 30, 0.85);
     width: 100%;
     padding: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

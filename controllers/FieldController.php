@@ -146,62 +146,66 @@ class FieldController
     is_auth();
     is_admin('profile');
     $types = Type::find();
-    //$districts = District::get();
     $branches = Branch::find();
-    $field = new Field;
     $messages = [];
-
     $idField = $_GET['id'] ?? null;
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-      if ($idField && is_numeric($idField)) {
-        // buscar en la db
-        $field = Field::findOne('id', $idField);
-        $previousImage = $field['image'];
-        // borrar la imagen del sistema local
-        deleteImage($previousImage);
-        // si no existe redireccionar
-        if (!$field) {
-          header('Location: /profile/see-fields');
-        }
-      } else {
+    // independientemente del método ya sea GET o POST
+    // siempre consultamos a la db
+    // si es GET consultamos para llenar los campos del formulario con lo que me devuelva la DB
+    // si es POST lo usamos para capturar la imagen previa y mandarla de vuelta al cliente
+    $field = Field::findOne('id', $idField);
+    $previousImage = $field['image'];
+
+    if ($idField && is_numeric($idField)) {
+      if (!$field) {
         header('Location: /profile/see-fields');
       }
-    } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    } else {
+      header('Location: /profile/see-fields');
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       $field = new Field($_POST);
-      $field->existImage();
+      $field->setProperty('image', $previousImage);
       $messages = $field->validateFields();
+
       if (empty($messages['errors'])) {
-        // si todos los campos estan llenos validar la imagen el tipo y el peso de la misma
-        $isValid = $field->validateImage();
-        if ($isValid) {
-          // guardamos la imagen si es valida
-          $res = $field->saveImage();
-          // si la imagen se guardo correctamente
-          if ($res['response']) {
-            // setear la propiedad image de la instancia con la url final
-            $field->setProperty('image', $res['image']);
-            // setear las horas corregidas
-            $correctedHours = correctHours($_POST['opening_hours'], $_POST['closing_time']);
-            $field->setProperty('opening_hours', $correctedHours['opening_hours']);
-            $field->setProperty('closing_time', $correctedHours['closing_time']);
-            // editar la publicacion
-            //debuguear($field);
-            $field->edit($idField);
+        // setear las horas corregidas
+        $correctedHours = correctHours($_POST['opening_hours'], $_POST['closing_time']);
+        $field->setProperty('opening_hours', $correctedHours['opening_hours']);
+        $field->setProperty('closing_time', $correctedHours['closing_time']);
+
+        if ($field->shouldUpdateImage()) {
+          $isValid = $field->validateImage();
+          if ($isValid) {
+            $res = $field->saveImage();
+            if ($res['response']) {
+              deleteImage($previousImage);
+              $field->setProperty('image', $res['image']);
+              $field->edit($idField);
+              header('Location: /field?id=' . $idField);
+            }
+            // si no se guardo la imagen
+            else {
+              Field::setMessage(
+                'errors',
+                ['badrequest' => 'hubo un error al guardar imagen']
+              );
+            }
           }
-          // si no se guardo la imagen
-          else {
-            Field::setMessage(
-              'errors',
-              ['badrequest' => 'hubo un error al guardar imagen']
-            );
-          }
+        } else {
+          unset($field->previous_image);
+          $field->edit($idField);
+          header('Location: /field?id=' . $idField);
         }
       }
+
       $field = $field->getValues();
     }
-    $messages = Field::getMessages();
 
+
+    $messages = Field::getMessages();
 
     $router->render('field/form-field.php', [
       'types' => $types,

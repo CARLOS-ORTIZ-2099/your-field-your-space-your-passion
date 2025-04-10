@@ -13,6 +13,7 @@ class Field extends ActiveRecord
   protected $image;
   protected $opening_hours;
   protected $closing_time;
+  public $previous_image;
 
   protected static $table = 'fields';
   protected static $columns = ['name', 'rental_price', 'branch_id', 'type_id', 'image', 'opening_hours', 'closing_time'];
@@ -26,6 +27,7 @@ class Field extends ActiveRecord
     $this->image = $arguments['image'] ?? null;
     $this->opening_hours = $arguments['opening_hours'] ?? null;
     $this->closing_time = $arguments['closing_time'] ?? null;
+    $this->previous_image = $arguments['previous_image'] ?? null;
   }
 
 
@@ -53,6 +55,19 @@ class Field extends ActiveRecord
     return self::$messages;
   }
 
+  public function shouldUpdateImage()
+  {
+
+    if ($_FILES['image']['error'] === 0) {
+      return true;
+    }
+    return false;
+  }
+
+  // este método sólo es valido para cuando se cree un nuevo campo, ya que ahí si
+  // debería SI O SI mandarse una imagen
+  // pero cuando se va a editar un campo no es necesario que el usuario mande una imagen
+  // ya que el puede o no editar la imagen
   public function existImage()
   {
     if ($_FILES['image']['error'] === 4) {

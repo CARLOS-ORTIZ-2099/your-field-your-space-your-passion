@@ -53,6 +53,12 @@
         <label for="image">Imagen:</label>
         <input type="file" id="image" name="image" accept="image/png, image/jpeg, image/webp">
         <span class="error"><?= $errors['image'] ?? '' ?></span>
+        <!-- primero imprimir la imagen si existe una previa -->
+        <?php if ($field['image']): ?>
+          <img src="<?= "/uploads/" . $field['image'] ?>" alt="image-previous">
+          <input type="hidden" name="previous_image" value="<?= $field['image'] ?>">
+        <?php endif; ?>
+
       </div>
 
       <div class="form-group">
